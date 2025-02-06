@@ -1,0 +1,214 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Register</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        /* General styling */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Background image */
+        .background {
+            background-image: url('/images/landing.png'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+        }
+
+        /* Input field styling */
+        .form-control {
+            border-radius: 8px;
+            /* padding: 5px;  */
+            border: 1px solid #B7BAC7;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Login form container */
+        .register-container {
+            padding: 2rem;
+            height: 100%;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .form-floating > .form-control,
+        .form-floating > .form-select {
+            padding: 1.25rem 0.75rem;
+            height: calc(3.5rem + 2px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Style for the invalid feedback message inside the input */
+        .invalid-feedback {
+            font-size: 12px;
+            position: absolute;
+            transform: translateY(-50%);
+            left: 10rem;
+            color: red;
+            display: block; /* Ensures the message shows up when there's an error */
+            pointer-events: none; /* Prevents interaction with the error message */
+            opacity: 0.8;
+        }
+
+        .is-invalid {
+            border-color: red; /* Highlights the input field with a red border */
+            /* padding-right: 1rem; /* Adds padding to avoid overlap with error text */ */
+        }
+
+        .form-floating .invalid-feedback {
+            top: 0; /* Aligns error message to start of input */
+            transform: translateY(0);
+            margin-top: 0.25rem;
+            color: red;
+        }
+
+
+        /* Styles for form-select to match form-control */
+        .styled-select {
+            height: calc(3.5rem + 2px); /* Adjust height to match input fields */
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #B7BAC7;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            -webkit-appearance: none; /* Removes the default arrow on some browsers */
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23999" d="M2 0L0 2h4z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+
+            /* Focus styling to match other inputs */
+            .styled-select:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+                outline: none;
+            }
+
+    </style>
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="background d-flex align-items-center justify-content-end">
+
+        <!-- Registration form container -->
+        <div class="register-container ">
+
+            <div class="text-center mb-0">
+                <!-- logo path -->
+                <img src="/images/GEDSI Hub logo.png" alt="GEDSI HUB Logo" width="80">
+                <h4 class="fw-bold" style="font-family: 'Staatliches', sans-serif;">GEDSI HUB</h4>
+            </div>
+
+            <p class="text-center fs-6">Fill in the details to get started</p>
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" autocomplete="on">
+
+                <!-- First Name Input -->
+                <div class="form-floating mb-2">
+                    <input asp-for="Input.FirstName" class="form-control @(ViewData.ModelState["Input.FirstName"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="First Name" />
+                    <label asp-for="Input.FirstName">First Name</label>
+                    <span asp-validation-for="Input.FirstName" class="invalid-feedback"></span>
+                </div>
+
+                <!-- Last Name Input -->
+                <div class="form-floating mb-2">
+                    <input asp-for="Input.LastName" class="form-control @(ViewData.ModelState["Input.LastName"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Last Name" />
+                    <label asp-for="Input.LastName">Last Name</label>
+                    <span asp-validation-for="Input.LastName" class="invalid-feedback"></span>
+                </div>
+
+                <!-- Designation/Role Input -->
+                <div class="form-floating mb-2">
+                    <input asp-for="Input.DesignationRole" class="form-control @(ViewData.ModelState["Input.DesignationRole"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Designation/Role" />
+                    <label asp-for="Input.DesignationRole">Designation/Role</label>
+                    <span asp-validation-for="Input.DesignationRole" class="invalid-feedback"></span>
+                </div>
+
+                <!-- Unit/Office/Campus Input -->
+                <div class="form-floating mb-2">
+                    <input asp-for="Input.UnitOfficeCampus" class="form-control @(ViewData.ModelState["Input.UnitOfficeCampus"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Unit/Office/Campus" />
+                    <label asp-for="Input.UnitOfficeCampus">Unit/Office/Campus</label>
+                    <span asp-validation-for="Input.UnitOfficeCampus" class="invalid-feedback"></span>
+                </div>
+
+                <!-- Responsible Unit Dropdown -->
+                <div class="mb-2">
+                    <select asp-for="Input.ResponsibleUnit" asp-items="Model.ResponsibleUnits" class="form-select styled-select">
+                        <option value="" selected>-Responsible Unit-</option>
+                        <!-- Additional options here -->
+                    </select>
+                    <span asp-validation-for="Input.ResponsibleUnit" class="text-danger"></span>
+                </div>
+
+
+                <!-- Phone Number Input -->
+                <div class="form-floating mb-2">
+                    <input asp-for="Input.PhoneNumber" class="form-control @(ViewData.ModelState["Input.PhoneNumber"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Phone Number" />
+                    <label asp-for="Input.PhoneNumber">Phone Number</label>
+                    <span asp-validation-for="Input.PhoneNumber" class="invalid-feedback"></span>
+                </div>
+
+                <!-- Email Input -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control @(ViewData.ModelState["Input.Email"]?.Errors.Count > 0 ? "is-invalid" : "")" placeholder="Email" />
+                    <label asp-for="Input.Email">Email</label>
+                    <span asp-validation-for="Input.Email" class="invalid-feedback"></span>
+                </div>
+
+                <!-- Register Button -->
+                <button id="registerSubmit" type="submit" class="btn btn-primary w-100 mb-4">Register</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <!-- Select2 Plugin for Dropdown -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize Select2 on the Responsible Unit dropdown
+            $('.form-select').select2({
+                placeholder: "Select a Responsible Unit",
+                allowClear: true
+            });
+        });
+    </script>
+}
