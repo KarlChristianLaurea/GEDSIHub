@@ -1,0 +1,315 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = GADApplication
+build_property.RootNamespace = GADApplication
+build_property.ProjectDir = C:\Users\user\source\repos\GADApplication\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\user\source\repos\GADApplication
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/Account/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/Account/Manage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX01hbmFnZU5hdi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/Account/Manage/_StatusMessage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX1N0YXR1c01lc3NhZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/Account/Manage/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Areas/Identity/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/AccomplishmentReport/AccomplishmentReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb21wbGlzaG1lbnRSZXBvcnRcQWNjb21wbGlzaG1lbnRSZXBvcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/AccomplishmentReport/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb21wbGlzaG1lbnRSZXBvcnRcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/AccomplishmentReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb21wbGlzaG1lbnRSZXBvcnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/AdminInbox.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5JbmJveC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Calendar/AddEvent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FsZW5kYXJcQWRkRXZlbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Calendar/Calendar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FsZW5kYXJcQ2FsZW5kYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Calendar/DeleteEvent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FsZW5kYXJcRGVsZXRlRXZlbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Calendar/EditEvent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FsZW5kYXJcRWRpdEV2ZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Calendar/UserCalendar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FsZW5kYXJcVXNlckNhbGVuZGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/FPSUserList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRlBTVXNlckxpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/FPS/fps_dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRlBTXGZwc19kYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/AvailableMandate/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xBdmFpbGFibGVNYW5kYXRlXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/AvailableMandate/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xBdmFpbGFibGVNYW5kYXRlXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/AvailableMandate/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xBdmFpbGFibGVNYW5kYXRlXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/AvailableMandate/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xBdmFpbGFibGVNYW5kYXRlXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/AvailableMandate/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xBdmFpbGFibGVNYW5kYXRlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/AvailableMandate/IndexUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xBdmFpbGFibGVNYW5kYXRlXEluZGV4VXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/gado_dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xnYWRvX2Rhc2hib2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/MandatePage/AvailableMandates.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xNYW5kYXRlUGFnZVxBdmFpbGFibGVNYW5kYXRlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/MandatePage/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xNYW5kYXRlUGFnZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/MandatePage/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xNYW5kYXRlUGFnZVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/MandatePage/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xNYW5kYXRlUGFnZVxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/MandatePage/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xNYW5kYXRlUGFnZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/MandatePage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xNYW5kYXRlUGFnZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/SubmissionSettings/SetGARSubmissionDates.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xTdWJtaXNzaW9uU2V0dGluZ3NcU2V0R0FSU3VibWlzc2lvbkRhdGVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GADO/SubmissionSettings/SetSubmissionDates.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FET1xTdWJtaXNzaW9uU2V0dGluZ3NcU2V0U3VibWlzc2lvbkRhdGVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/DownloadGAR.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxEb3dubG9hZEdBUi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/FileDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxGaWxlRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/FileList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxGaWxlTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/FileUpload.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxGaWxlVXBsb2FkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/GARReview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxHQVJSZXZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/GPB.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxHUEIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GARPage/SubmissionList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR0FSUGFnZVxTdWJtaXNzaW9uTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GPBPage/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR1BCUGFnZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GPBPage/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR1BCUGFnZVxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GPBPage/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR1BCUGFnZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GPBPage/FilterAndDownloadGPB.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR1BCUGFnZVxGaWx0ZXJBbmREb3dubG9hZEdQQi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GPBPage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR1BCUGFnZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GPBPage/Review.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR1BCUGFnZVxSZXZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GPBPage/SubmittedGPB.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR1BCUGFnZVxTdWJtaXR0ZWRHUEIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/GPBProgress.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR1BCUHJvZ3Jlc3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Message.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWVzc2FnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/MyGAR.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlHQVIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/MyGPB.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlHUEIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Notifications.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90aWZpY2F0aW9ucy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Shared/_FPSLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9GUFNMYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Shared/_GADOLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9HQURPTGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Shared/_NotificationDropdown.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Ob3RpZmljYXRpb25Ecm9wZG93bi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/UserDelete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlckRlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/UserList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlckxpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/UserProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclByb2ZpbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/GADApplication/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-nwh7b0gscf
