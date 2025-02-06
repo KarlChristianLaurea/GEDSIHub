@@ -1,0 +1,105 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+
+
+/* General Styling */
+html, body {
+    height: 100%;
+    margin: auto !important;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    color: #464040 !important; /* Dark gray for readability */
+}
+
+/* Sidebar fixed width and full height */
+#sidebar {
+    margin-top: 2.5rem;
+    position: fixed;
+    width: 235px; /* Fixed sidebar width */
+    height: 80vh;
+    border: hidden !important;
+}
+    /* Sidebar Navigation Links */
+    #sidebar .nav-link {
+        color: #464040;
+        padding: 0.8rem; /* Padding inside each link */
+        font-size: 1rem; /* Tabs font size */
+        border-radius: 12px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+        /* Active and Hover Styles for Sidebar Links */
+        #sidebar .nav-link.active {
+            background-color: #660000; /* Red background and white text on hover/active */
+            color: #ffffff !important;
+        }
+
+            #sidebar .nav-link.active img {
+                filter: brightness(0) invert(1) !important; /* Optional styling for PNG to simulate color change */
+                color: #ffffff;
+            }
+
+        #sidebar .nav-link:hover {
+            background-color: #e0e0e0 !important; /* Red background and white text on hover/active */
+        }
+
+/* Main content area */
+#content {
+    margin-left: 235px; /* Offset by sidebar width */
+    padding: 20px;
+    height: 90vh !important; /* Adjust based on navbar height */
+    border-top-left-radius: 28px; /* Top-left corner rounding */
+    overflow: auto; /* Prevent overflow on main container */
+    background-color: #EFF0F4 !important; /* Background for visibility */
+    box-sizing: border-box;
+}
+
+
+/* Navbar Styling */
+.navbar {
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for navbar depth */
+    z-index: 1030;
+}
+
+
+/* Logout Button Modal Styling */
+.btn-logout {
+    background-color: #660000;
+    color: white;
+    border-radius: 10px; /* Same rounded effect for consistency */
+    transition: all 0.3s ease;
+}
+
+    .btn-logout:hover {
+        background-color: #660000;
+        color: white;
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transform: translateY(-2px); /* Lift effect */
+    }
+
+.btn-cancel {
+    color: #660000;
+    border-color: #660000;
+    border-radius: 10px; /* Same rounded effect for consistency */
+    transition: all 0.3s ease;
+}
+    .btn-cancel:hover {
+        color: #660000;
+        border-color: #660000;
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transform: translateY(-2px); /* Lift effect */
+    }
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    /* Hide sidebar on smaller screens */
+    #sidebar {
+        display: none;
+    }
+
+    /* Main content spans full width */
+    #content {
+        margin-left: 0;
+        border-top-left-radius: 0; /* Remove rounding if desired */
+    }
+}
