@@ -1,0 +1,172 @@
+﻿@page
+@model NotificationsModel
+@{
+    ViewData["Title"] = "Notifications";
+    Layout = RouteData.Values["layout"]?.ToString() == "GADO" ? "_GADOLayout" : "_FPSLayout";
+
+}
+
+<!-- Header Section with Title and Create Button -->
+<div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+
+    <!-- Tabs for All and Unread -->
+    <div class="d-flex">
+        <button class="btn-sm btn-tab active" id="all-tab" onclick="showTab('all')">All</button>
+        <button class="btn-sm btn-tab" id="unread-tab" onclick="showTab('unread')">Unread</button>
+    </div>
+</div>
+<hr />
+
+<div class="container">
+    <!-- Combined Notification List -->
+    <div class="notification-panel mx-auto">
+        <ul class="list-group notification-list">
+            @foreach (var notification in Model.UserNotifications)
+            {
+                <li class="notification-item">
+                    <div class="notification-icon bg-icon">
+                        <i class="@(notification.IsAdminNotification ? "bi bi-star-fill text-warning" : "bi bi-chat-left-dots-fill text-secondary")"></i>
+                    </div>
+                    <div class="notification-content">
+                        <strong>@notification.Message</strong>
+                        <br>
+                        <span class="notification-timestamp">@notification.CreatedAt.ToString("g")</span>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    function showTab(tab) {
+        document.getElementById("all-tab").classList.remove("active");
+        document.getElementById("unread-tab").classList.remove("active");
+        document.getElementById(tab + "-tab").classList.add("active");
+        // Implement filtering logic if needed
+    }
+</script>
+
+<style>
+    .notification-panel {
+        width: 100%;
+        max-height: 550px;
+        overflow-y: auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        padding: 20px;
+    }
+
+    .btn-tab {
+        background-color: transparent;
+        color: #333;
+        font-weight: 600;
+        border: none;
+        padding: 3px 15px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+        .btn-tab.active {
+            color: #fff;
+            background-color: #8B0000; /* Dark red for active tab */
+            border-radius: 15px;
+        }
+
+    .notification-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .notification-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #eee;
+        font-size: 0.9rem;
+        color: #333;
+        background-color: #FAFAFA;
+    }
+
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 15px;
+    }
+
+    .notification-timestamp {
+        font-size: 0.75rem;
+        color: #888;
+        white-space: nowrap;
+    }
+
+    .btn-see-all {
+        border: 1px solid #333;
+        color: #333;
+        font-weight: 500;
+        border-radius: 20px;
+        width: 100%;
+        padding: 10px 0;
+        margin-top: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .btn-see-all:hover {
+            background-color: #333;
+            color: #fff;
+        }
+</style>
+
+
+@* @section Scripts {
+    <script>
+        function markAsRead(notificationId) {
+            fetch(`/Notifications/MarkAsRead?id=${notificationId}`, {
+                method: 'POST'
+            }).then(() => location.reload());
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+
+    <script type="text/javascript">
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub")
+            .build();
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        connection.on("ReceiveNotification", function (message) {
+            const toastContainer = document.getElementById('toast-container');
+            const toastHTML = `
+                        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <strong class="me-auto">New Notification</strong>
+                                <small>just now</small>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                                ${message}
+                            </div>
+                        </div>`;
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            const toastElement = toastContainer.querySelector('.toast:last-child');
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        });
+    </script>
+    <!-- Bootstrap Toast Container -->
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3"></div>
+} *@

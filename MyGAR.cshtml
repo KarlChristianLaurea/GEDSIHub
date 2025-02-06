@@ -1,0 +1,210 @@
+﻿@page
+@model GADApplication.Pages.MyGAR.MyGARModel
+@{
+    ViewData["Title"] = "My Accomplishment Report";
+    Layout = "_FPSLayout"; // Use the same layout as DownloadGAR
+}
+
+<!-- Header Section with Title -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h4 class="mb-0">@ViewData["Title"]</h4>
+    <form method="get" class="d-flex position-relative w-25">
+        <div class="input-group mb-0 position-relative"
+            <!-- Activity Name Search -->
+            <input type="text" name="activityName" id="activityName" class="form-control rounded-pill border-secondary shadow-sm " placeholder="Search for activity name.." value="@Model.ActivityNameFilter">       
+            <button type="submit" class="btn btn-search btn-lg">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </form>
+</div>
+<hr />
+
+
+<!-- Summary Section -->
+@if (Model.GPBs?.Any() == true)
+{
+    <div class="info-card card mb-4">
+        <div class="card-header d-flex justify-content-between p-2"></div>
+        <div class="table-responsive table-wrapper">
+            <table class="table table-hover align-middle">
+                <tbody>
+                    <tr>
+                        <th>Total Budget</th>
+                        <td>@Model.GPBs.Sum(g => g.TotalGAAOrBudget).ToString("C")</td>
+                    </tr>
+                    <tr>
+                        <th>Total Actual Cost</th>
+                        <td>@Model.GPBs.SelectMany(g => g.Activities).SelectMany(a => a.Files).Where(f => f.ActualCost.HasValue).Sum(f => f.ActualCost.Value).ToString("C")</td>
+                    </tr>
+                    <tr>
+                        <th>Utilization Rate</th>
+                        <td>
+                            @((Model.GPBs.Sum(g => g.TotalGAAOrBudget) > 0)
+                                ? (Model.GPBs.SelectMany(g => g.Activities).SelectMany(a => a.Files).Where(f => f.ActualCost.HasValue).Sum(f => f.ActualCost.Value) / Model.GPBs.Sum(g => g.TotalGAAOrBudget) * 100).ToString("F2")
+                                : "0")%
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total Activities</th>
+                        <td>@Model.GPBs.Sum(g => g.Activities.Count)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Detailed Activities Section -->
+    <div class="activity-card card bg-white mx-auto mt-4 mb-4">
+        <div class="card-header p-2 text-white">Activities</div>
+            <!-- Scrollable Table Container -->
+            <div class="table-responsive table-wrapper">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th >Total Budget</th>
+                            <th>Responsible Unit</th>
+                            <th>Gender Issue/GAD Mandate</th>
+                            <th>Cause of Gender Issue</th>
+                            <th >GAD Result Statement/GAD Objective</th>
+                            <th>GAD Activity</th>
+                            <th>Performance Indicators/Targets</th>
+                            <th>GAD Budget</th>
+                            <th>Source of Budget</th>
+                            <th>Files</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var gpb in Model.GPBs)
+                        {
+                            foreach (var activity in gpb.Activities)
+                            {
+                                var files = Model.ActivityFiles.ContainsKey(activity.Id)
+                                ? Model.ActivityFiles[activity.Id]
+                                : new List<GADApplication.Models.FileEntity>();
+
+                                <tr>
+                                    <td>@gpb.TotalGAAOrBudget.ToString("C")</td>
+                                    <td>@gpb.ResponsibleUnit</td>
+                                    <td>
+                                        @foreach (var mandate in activity.Mandates)
+                                        {
+                                            <p>@mandate.RepublicAct - @mandate.Description</p>
+                                        }
+                                    </td>
+                                <td>@activity.Cause</td>
+                                <td >@activity.Objective</td>
+                                <td>@activity.Name</td>
+                                <td>@activity.PerformanceIndicators</td>
+                                <td >@activity.Budget.ToString("C")</td>
+                                    <td>@activity.SourceBudget</td>
+                                    <td>
+                                        @if (files.Any())
+                                        {
+                                            <ul>
+                                                @foreach (var file in files)
+                                                {
+                                                    <li>
+                                                        <strong>Result:</strong> @file.ActualResult<br />
+                                                    <strong>Cost:</strong> @file.ActualCost?.ToString("C")<br />
+                                                    <strong>Event:</strong> @file.NatureOfEvent<br />
+                                                        <strong>Participants:</strong> @file.NumberOfParticipants?.ToString()<br />
+                                                        <strong>Team Members:</strong> @file.OrganizingTeamMembers"N/A"
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <span>No files available</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        <!-- Download PDF Button -->
+        <div class="p-3">
+            <form method="post" asp-page-handler="DownloadPdf">
+                <input type="hidden" name="year" value="@Model.YearFilter" />
+                <input type="hidden" name="activityName" value="@Model.ActivityNameFilter" />
+                <button type="submit" class="btn btn-sm btn-pdf btn-sm rounded-3 bg-white">
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Download My GAR
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+
+
+}
+else
+{
+    <p>No accomplishment reports found for your responsible unit.</p>
+}
+
+
+<div class="d-flex justify-content-between align-items-center mt-4">
+    <div></div>
+    <div class="d-flex ms-auto">
+        <!-- Added d-flex class for horizontal alignment -->
+        <a asp-page="/Calendar/UserCalendar" class="btn btn-back btn-sm align-items-center bg-white d-flex me-3 mt-1">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Styling -->
+<style>
+
+    .card-header {
+        background-color: #660000;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-pdf {
+        color: #660000;
+        border-color: #660000;
+        transition: all 0.3s ease;
+    }
+
+        .btn-pdf:hover {
+            color: #660000;
+            border-color: #660000;
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .table-bordered {
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 6px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .btn-back {
+        background-color: #660000;
+        border: 1px solid #660000;
+        color: #660000;
+    }
+
+    .btn-search:hover {
+        transform: translateY(-2px); /* Lift effect */
+    }
+
+</style>

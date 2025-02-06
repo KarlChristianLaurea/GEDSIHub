@@ -1,0 +1,156 @@
+﻿@page
+@model GADApplication.Pages.MyGPB.MyGPBModel
+@{
+    ViewData["Title"] = "My GPB Submissions";
+    Layout = "_FPSLayout";
+}
+
+<!-- Header Section with Title -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h4 class="mb-0">@ViewData["Title"]</h4>
+    <form method="get" class="d-flex position-relative me-0 w-25">
+        <div class="input-group mb-0 position-relative"
+            <!-- Activity Name Search -->
+            <input type="text" name="searchActivity" class="form-control rounded-pill border-secondary shadow-sm" placeholder="Search for activity name.." value="@Model.SearchActivity">
+
+            <button type="submit" class="btn btn-search btn-lg">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </form>
+</div>
+<hr />
+
+
+@if (Model.GPBs != null && Model.GPBs.Count > 0)
+{
+    <!-- Summary Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <th>Total Budget</th>
+                        <td>@Model.TotalBudget.ToString("C")</td>
+                    </tr>
+                    <tr>
+                        <th>Number of Activities</th>
+                        <td>@Model.GPBs.SelectMany(g => g.Activities).Count()</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- GPB Submissions -->
+    <div class="gpbList-card card mx-auto mb-4">
+        <div class="gpbList-header text-white">
+            <h5 class="mb-0 ms-1 p-2">GPB Submissions</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th>Year</th>
+                            <th>Total Budget</th>
+                            <th>Responsible Unit</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var gpb in Model.GPBs)
+                        {
+                            <tr class="text-center">
+                                <td class="fw-bold">@gpb.Year</td>
+                                <td>@gpb.TotalGAAOrBudget.ToString("C")</td>
+                                <td>@gpb.ResponsibleUnit</td>
+                                <td><span class="badge bg-success">@gpb.Status</span></td>
+                            </tr>
+
+                            <!-- Activities Section -->
+                            <tr class="activity-section">
+                                <td colspan="4" class="bg-light p-3">
+                                    <div class="activities-container">
+                                        <h5 class="fw-semibold">Activities:</h5>
+                                        <ul class="list-unstyled ms-3">
+                                            @foreach (var activity in gpb.Activities)
+                                            {
+                                                <li class="mb-3">
+                                                    <strong>@activity.Name</strong><br />
+                                                    <span class="text-muted">Objective:</span> @activity.Objective<br />
+                                                    <span class="text-muted">Budget:</span> @activity.Budget.ToString("C")<br />
+                                                    <span class="text-muted">Performance Indicators:</span> @activity.PerformanceIndicators<br />
+                                                    <span class="text-muted">Mandates:</span>
+                                                    <ul class="list-unstyled ms-4">
+                                                        @foreach (var mandate in activity.Mandates)
+                                                        {
+                                                            <li><i class="bi bi-chevron-right"></i> <em>@mandate.RepublicAct</em> - @mandate.Description</li>
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <form method="post" asp-page-handler="DownloadPdf" class="d-inline">
+                <input type="hidden" name="searchActivity" value="@Model.SearchActivity" />
+                <button type="submit" class="btn btn-sm btn-pdf rounded-3 shadow-sm">
+                    <i class="bi bi-file-earmark-pdf-fill me-1"></i>Download My GPBs
+                </button>
+            </form>
+        </div>
+    </div>
+}
+else if (Model.GPBs != null)
+{
+    <p class="text-muted">No GPB submissions found for your responsible units.</p>
+}
+
+<div class="d-flex justify-content-between align-items-center mt-4">
+    <div></div>
+    <div class="d-flex ms-auto">
+        <!-- Added d-flex class for horizontal alignment -->
+        <a asp-page="/Calendar/UserCalendar" class="btn btn-back btn-sm align-items-center bg-white d-flex me-3 mt-1">
+            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+
+<style>
+    .card-header{
+        background-color: #660000;
+    }
+
+    .btn-pdf {
+        color: #660000;
+        border-color: #660000;
+        transition: all 0.3s ease;
+    }
+
+        .btn-pdf:hover {
+            color: #660000;
+            border-color: #660000;
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    .btn-back {
+        background-color: #660000;
+        border: 1px solid #660000;
+        color: #660000;
+    }
+
+    .btn-search:hover{
+        transform: translateY(-2px); /* Lift effect */
+    }
+</style>

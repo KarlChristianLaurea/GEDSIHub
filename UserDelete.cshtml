@@ -1,0 +1,52 @@
+﻿@page "{id?}"
+@model UserDeleteModel
+@{
+    ViewData["Title"] = "User Delete";
+    Layout = "_GADOLayout";
+}
+
+<!-- Card for Deleting Confirmation -->
+<div class="deleteUser-card card mx-auto">
+    <div class="deleteUser-header text-white p-2">
+        <h5 class="mb-0">Confirm Deletion</h5>
+    </div>
+
+    <div class="card-body">
+        <h5> Are you sure you want to delete this user?</h5>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card-footer d-flex justify-content-end">
+        <form method="post" class="d-inline">
+            <input type="hidden" asp-for="UserId" />
+            <button type="submit" class="btn btn-danger me-2">Delete</button>
+        </form>
+        <a asp-page="./UserList" class="btn btn-cancel">Cancel</a>
+    </div>
+</div>
+
+
+<style>
+    .deleteUser-card {
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        width: 35rem;
+    }
+    .deleteUser-header {
+        background-color: #660000 !important; /* background color for header */
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    /* Buttons styles */
+    .btn {
+        border-radius: 8px;
+        padding: 0.4rem;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    }
+        .btn:hover {
+            background-color: lightgray !important;
+        }
+</style>

@@ -1,0 +1,127 @@
+﻿@page
+@model UserListModel
+@{
+    ViewData["Title"] = "Focal Persons";
+    Layout = "_GADOLayout";
+}
+
+<!-- Title and Spacing -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-register d-flex align-items-center me-3" aria-label="Register user" data-bs-toggle="tooltip" title="Register new user">
+        <i class="bi bi-person-add me-2"></i> Register
+    </a>
+</div>
+
+<!-- Card for User List -->
+<div class="userList-card bg-white mx-auto mt-4 mb-4">
+    <div class="userList-header p-2">
+    </div>
+
+    <div class="card-body p-2">
+        <!-- Scrollable Table Container -->
+        <div class="table-responsive table-wrapper">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Designation Role</th>
+                        <th>Unit Office Campus</th>
+                        <th>Responsible Unit</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.Email</td>
+                            <td>@user.PhoneNumber</td>
+                            <td>@user.DesignationRole</td>
+                            <td>@user.UnitOfficeCampus</td>
+                            <td>@user.ResponsibleUnit</td>
+                            <td class="text-center">
+                                <a asp-page="/UserDelete" asp-route-id="@user.Id" class="btn btn-icon-only btn-delete me-1" data-bs-toggle="tooltip" title="Delete this User">
+                                    <i class="bi bi-trash3-fill fs-6 me-1" style="color:#800000;"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Container for User list header */
+    .userList-header {
+        background-color: #660000 !important; /* Background color for header */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Container for User list card */
+    .userList-card {
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+                    0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+        width: 75rem;
+        max-height: 35rem;
+        overflow: hidden;
+    }
+
+    /* Scrollable table body */
+    .table-wrapper {
+        max-height: 28rem; /* Adjust height as needed */
+        overflow-y: auto;
+    }
+
+    /* Keep table headers fixed */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #f8f9fa;
+    }
+
+    /* Custom rounded styling for the table */
+    .table {
+        border-radius: 8px;
+    }
+
+    /* Enhanced Aesthetic Buttons */
+    .btn-icon-only {
+        transition: all 0.3s ease;
+        color: #660000;
+    }
+
+        /* Hover effect for icon-only buttons */
+        .btn-icon-only:hover {
+            transform: translateY(-2px); /* Slight lift effect on hover */
+            border-radius: 45%;
+            background-color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+            0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+        }
+
+    /* Register Button Styling */
+    .btn-register {
+        background-color: #660000;
+        color: white;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 6px 6px rgba(0, 0, 0, 0.04);
+    }
+
+        .btn-register:hover {
+            background-color: lightgray;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+</style>

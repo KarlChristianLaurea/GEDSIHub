@@ -1,0 +1,275 @@
+﻿@* @page
+@model UserProfileModel
+@{
+    ViewData["Title"] = "User Profile";
+    Layout = "_GADOLayout";
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <!-- Custom CSS -->
+    <style>
+        .profile-container {
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+        }
+
+        .profile-left {
+            text-align: center;
+            padding: 40px;
+            border-right: 1px solid #e0e0e0;
+        }
+
+            .profile-left img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: #e0e0e0;
+            }
+
+            .profile-left h2 {
+                font-size: 20px;
+                font-weight: 600;
+                margin: 15px 0;
+            }
+
+            .profile-left .small-text {
+                color: #888;
+                font-size: 14px;
+            }
+
+        .profile-right {
+            padding: 40px;
+        }
+
+            .profile-right .info-group {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+            }
+
+                .profile-right .info-group label {
+                    font-weight: 500;
+                    color: #666;
+                }
+
+                .profile-right .info-group span {
+                    color: #333;
+                }
+
+        .btn-editprofile {
+            background-color: transparent; /* Transparent background */
+            color: #660000; /* Dark red color */
+            border: 1px solid #660000; /* Dark red border color */
+            font-weight: 500;
+            border-radius: 45px;
+            transition: all 0.3s ease; /* Smooth transition */
+            padding: 0.2rem 0.7rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+
+            .btn-editprofile:hover {
+                background-color: lightgray; /* Dark red background on hover */
+            }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section with Title and Create Button -->
+    <div class="d-flex justify-content-between align-items-center mt-2">
+        <h3 class="mb-0">@ViewData["Title"]</h3>
+    </div>
+    <hr />
+    <div class="profile-container bg-light d-flex position-relative mx-auto">
+        <!-- Left Side -->
+        <div class="profile-left col-md-4">
+            <img src="https://via.placeholder.com/100" alt="Profile Picture">
+            <h2>@Model.FullName.ToUpper()</h2>
+            <p class="text-center> username: @Model.UserName</p>
+            <p class="text-sm">@Model.DesignationRole</p>
+            <p class="small-text">@Model.UnitOfficeCampus</p>
+        </div>
+
+        <!-- Right Side -->
+        <div class="profile-right col-md-8">
+
+            <!-- Edit Profile Button -->
+            <!-- Edit Profile Button positioned on top-right -->
+            <button class="btn btn-editprofile position-absolute top-0 end-0 m-3">
+                <i class="bi bi-pencil me-1"></i> Edit Profile
+            </button>
+
+            <div class="info-group mt-5">
+                <label>Email</label>
+                <span>@Model.Email (@(Model.EmailConfirmed ? "Confirmed" : "Unconfirmed"))</span>
+            </div>
+            <div class="info-group">
+                <label>Phone Number</label>
+                <span>@Model.PhoneNumber (@(Model.PhoneNumberConfirmed ? "Confirmed" : "Unconfirmed"))</span>
+            </div>
+            <div class="info-group">
+                <label>Responsible Unit</label>
+                <span>@Model.ResponsibleUnit</span>
+            </div>
+            <div class="info-group">
+                <label>Account Status</label>
+                <span>@(Model.LockoutEnabled ? "Locked" : "Active")</span>
+            </div>
+            <div class="info-group">
+                <label>Failed Login Attempts</label>
+                <span>@Model.AccessFailedCount</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap and Font Awesome JS -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html> *@
+
+
+@page "{layout?}"
+@model UserProfileModel
+@{
+    ViewData["Title"] = "User Profile";
+    // Set layout based on the optional route parameter
+    Layout = RouteData.Values["layout"]?.ToString() == "GADO" ? "_GADOLayout" : "_FPSLayout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <!-- Custom CSS -->
+    <style>
+        .profile-container {
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+        }
+
+        .profile-left {
+            text-align: center;
+            padding: 40px;
+            border-right: 1px solid #e0e0e0;
+        }
+
+            .profile-left img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: #e0e0e0;
+            }
+
+            .profile-left h2 {
+                font-size: 20px;
+                font-weight: 600;
+                margin: 15px 0;
+            }
+
+            .profile-left .small-text {
+                color: #888;
+                font-size: 14px;
+            }
+
+        .profile-right {
+            padding: 40px;
+        }
+
+            .profile-right .info-group {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 15px;
+            }
+
+                .profile-right .info-group label {
+                    font-weight: 500;
+                    color: #666;
+                }
+
+                .profile-right .info-group span {
+                    color: #333;
+                }
+
+        .btn-editprofile {
+            background-color: transparent; /* Transparent background */
+            color: #660000; /* Dark red color */
+            border: 1px solid #660000; /* Dark red border color */
+            font-weight: 500;
+            border-radius: 45px;
+            transition: all 0.3s ease; /* Smooth transition */
+            padding: 0.2rem 0.7rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+
+            .btn-editprofile:hover {
+                background-color: lightgray; /* Dark red background on hover */
+            }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section with Title and Create Button -->
+    <div class="d-flex justify-content-between align-items-center mt-2">
+        <h3 class="mb-0">@ViewData["Title"]</h3>
+    </div>
+    <hr />
+    <div class="profile-container bg-light d-flex position-relative mx-auto">
+        <!-- Left Side -->
+        <div class="profile-left col-md-4">
+            <img src="https://via.placeholder.com/100" alt="Profile Picture">
+            <h2>@Model.FullName.ToUpper()</h2>
+            <p class="text-center> username: @Model.UserName</p>
+            <p class="text-sm">@Model.DesignationRole</p>
+            <p class="small-text">@Model.UnitOfficeCampus</p>
+        </div>
+
+        <!-- Right Side -->
+        <div class="profile-right col-md-8">
+
+            <!-- Edit Profile Button -->
+            <!-- Edit Profile Button positioned on top-right -->
+            <button class="btn btn-editprofile position-absolute top-0 end-0 m-3">
+                <i class="bi bi-pencil me-1"></i> Edit Profile
+            </button>
+
+            <div class="info-group mt-5">
+                <label>Email</label>
+                <span>@Model.Email (@(Model.EmailConfirmed ? "Confirmed" : "Unconfirmed"))</span>
+            </div>
+            <div class="info-group">
+                <label>Phone Number</label>
+                <span>@Model.PhoneNumber (@(Model.PhoneNumberConfirmed ? "Confirmed" : "Unconfirmed"))</span>
+            </div>
+            <div class="info-group">
+                <label>Responsible Unit</label>
+                <span>@Model.ResponsibleUnit</span>
+            </div>
+            <div class="info-group">
+                <label>Account Status</label>
+                <span>@(Model.LockoutEnabled ? "Locked" : "Active")</span>
+            </div>
+            <div class="info-group">
+                <label>Failed Login Attempts</label>
+                <span>@Model.AccessFailedCount</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap and Font Awesome JS -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTB55AUHTz3hjCjF1DkIYtkDY7y3la60SihISPR7Lt3HYp" crossorigin="anonymous"></script>
+</body>
+</html>
