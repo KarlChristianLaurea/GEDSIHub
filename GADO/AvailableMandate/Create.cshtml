@@ -1,0 +1,138 @@
+﻿@page
+@model GADApplication.Pages.GADO.AvailableMandate.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_GADOLayout";
+}
+<!-- Container for title and button on the same line -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <!-- Page Title on the left -->
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+</div>
+<hr />
+
+<!-- Card for Deleting Confirmation -->
+<div class="createMandate-card card shadow-sm mx-auto mb-4" style="max-width: 600px;">
+    <div class="createMandate-header text-white p-2">
+        <span class="mb-0 p-1"></span>
+    </div>
+
+    <div class="card-body">
+        <!-- Mandate Forms -->
+        <form method="post" novalidate id="createMandateForm">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <!-- Republic Act Field with Tooltip -->
+            <div class="form-group mb-4">
+                <label asp-for="AvailableMandates.RepublicActAvailable" class="form-label fw-bold"> Republic Act</label>
+                <input asp-for="AvailableMandates.RepublicActAvailable" class="form-control" col="3" placeholder="Enter Republic Act Number"></input>
+                <span asp-validation-for="AvailableMandates.RepublicActAvailable" class="text-danger"></span>
+            </div>
+
+            <!-- Description Field with Placeholder and Tooltip -->
+            <div class="form-group mb-4">
+                <label asp-for="AvailableMandates.DescriptionAvailable" class="form-label fw-bold">Description</label>
+                <textarea asp-for="AvailableMandates.DescriptionAvailable" class="form-control" rows="5" placeholder="Provide a detailed description..."></textarea>
+                <span asp-validation-for="AvailableMandates.DescriptionAvailable" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="card-footer d-flex justify-content-end">
+        <!-- Back to List Button with Tooltip -->
+        <a asp-page="Index" class="btn btn-cancel me-2" data-bs-toggle="tooltip" title="Back to List">
+            Cancel
+        </a>
+        <!-- Create Button with tooltip -->
+        <button type="submit" form="createMandateForm" class="btn btn-add rounded-3" data-bs-toggle="tooltip" title="Add new mandate">
+            <i class="bi bi-plus-circle me-1"></i> Add
+        </button>
+    </div>
+</div>
+
+<!-- Script -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+
+    /* Create Card Heading */
+    .createMandate-header {
+        background-color: #660000 !important; /* background color for header */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Container for create mandate */
+    .createMandate-card {
+        border-radius: 10px; /* Adjust this value for more or less rounding */
+        background-color: #f8f9fa; /* Optional: Light background color */
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    }
+
+    /* container for content */
+    .card-body {
+        border-radius: 10px; /* Adjust this value for more or less rounding */
+        padding: 20px;
+    }
+
+    /* Buttons styles */
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    /* Add Button */
+    .btn-add {
+        background-color: #660000; /* background color for header */
+        color: white;
+    }
+
+        .btn-add:hover {
+            background-color: lightgray;
+        }
+
+</style>
+
+
+
+@*<style>
+    /* Content Header */
+    .card-header {
+        background-color: #660000 !important;
+    }
+
+    /* Content Container */
+    .card-body{
+        padding: 5px;
+    }
+    .createMandate-card {
+        margin: auto;
+        height: 60vh;
+        width: 100vh;
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    } */
+</style> *@
+
+@* <style>
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+</style> *@
+

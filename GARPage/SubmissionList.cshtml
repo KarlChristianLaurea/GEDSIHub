@@ -1,0 +1,46 @@
+﻿@page
+@model GADApplication.Pages.GARPage.SubmissionListModel
+@{
+    ViewData["Title"] = "GPB Submissions List";
+}
+
+<h2>GPB Submissions List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>GPB ID</th>
+            <th>Year</th>
+            <th>Total Budget</th>
+            <th>Responsible Unit</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var gpb in Model.GPBSubmissions)
+        {
+            <tr>
+                <td>@gpb.Id</td>
+                <td>@gpb.Year</td>
+                <td>@gpb.TotalGAAOrBudget</td>
+                <td>@gpb.ResponsibleUnit</td>
+                <td>@gpb.Status</td>
+                <td>
+                    @if (gpb.Status == "Approved with Files")
+                    {
+                        <a asp-page="/GARPage/FileDetails" asp-route-id="@gpb.Id" class="btn btn-info">View Details</a>
+                    }
+                    else if (gpb.Status == "Rejected")
+                    {
+                        <a asp-page="/GPBPage/SubmittedGPB" asp-route-id="@gpb.Id" class="btn btn-warning">Modify Submission</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Pending Review</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

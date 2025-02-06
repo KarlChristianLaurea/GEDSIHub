@@ -1,0 +1,189 @@
+﻿@page
+@model GADApplication.Pages.GADO.SubmissionSettings.SetSubmissionDatesModel
+@{
+    ViewData["Title"] = "Set Submission Time Frame";
+    Layout = "_GADOLayout";
+}
+
+<!-- Title Section -->
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+</div>
+
+<hr />
+
+<!-- Submission Form -->
+<div class="submissionForm-card card mx-auto mt-4 w-50">
+    <div class="card-body">
+        <form method="post" class="needs-validation" id="submissionForm" novalidate>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <h5>Current Submission Dates</h5>
+                    @if (Model.SubmissionStartDate != DateTime.MinValue && Model.SubmissionEndDate != DateTime.MinValue)
+                    {
+                        <div class="alert alert-info">
+                            <strong>Start Date:</strong> @Model.SubmissionStartDate.ToString("MMMM dd, yyyy hh:mm tt")<br />
+                            <strong>End Date:</strong> @Model.SubmissionEndDate.ToString("MMMM dd, yyyy hh:mm tt")
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">
+                            No existing submission dates have been set.
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Submission Date Fields -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SubmissionStartDate" class="form-label">Submission Start Date</label>
+                        <input asp-for="SubmissionStartDate" class="form-control" type="datetime-local" value="@Model.SubmissionStartDate.ToString("yyyy-MM-ddTHH:mm")" />
+                        <span asp-validation-for="SubmissionStartDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SubmissionEndDate" class="form-label">Submission End Date</label>
+                        <input asp-for="SubmissionEndDate" class="form-control" type="datetime-local" value="@Model.SubmissionEndDate.ToString("yyyy-MM-ddTHH:mm")" />
+                        <span asp-validation-for="SubmissionEndDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-group mt-3 d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-save btn-action" data-bs-toggle="tooltip" title="Set Submission Dates">
+                    <i class="bi bi-calendar-check me-1"></i> Set Submission
+                </button>
+
+                @if (Model.SubmissionStartDate != DateTime.MinValue && Model.SubmissionEndDate != DateTime.MinValue)
+                {
+                    <button type="button" class="btn btn-action btn-delete bg-white" onclick="showDeleteModal()" data-bs-toggle="tooltip" title="Delete Submission Settings">
+                        <i class="bi bi-trash3-fill"></i> Delete
+                    </button>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body text-center">
+                <!-- Red Spinner -->
+                <div class="spinner-grow text-danger" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-white">Processing, please wait...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Modal for Delete Confirmation -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Submission Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the current submission settings?
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-page-handler="Delete">
+                    <button type="button" class="btn btn-action btn-cancel bg-white rounded-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-action btn-confirm rounded-3">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function showDeleteModal() {
+            var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        }
+
+        document.getElementById('submissionForm').addEventListener('submit', function (event) {
+            var loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
+
+            document.querySelector('button[type="submit"]').disabled = true;
+        });
+    </script>
+}
+
+
+<!-- Custom Styles -->
+<style>
+    /* Card for Form */
+    .submissionForm-card {
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), /* Soft main shadow */
+        0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle secondary shadow */
+        width: 75rem;
+    }
+
+    /* Button Styling */
+    .btn-save, .btn-delete {
+        transition: all 0.3s ease;
+    }
+
+        .btn-save:hover, .btn-delete:hover {
+            transform: translateY(-2px);
+        }
+
+    /* Delete Button Custom Color */
+    .btn-save {
+        background-color: #660000;
+        color: white;
+    }
+
+        .btn-save:hover {
+            background-color: lightgray;
+        }
+
+    .btn-delete {
+        color:#660000;
+        border: 1.5px solid #660000;
+    }
+
+        .btn-delete:hover {
+            color: #660000;
+            border: 1.5px solid #660000;
+        }
+
+
+    .btn-action {
+        transition: all 0.3s ease;
+    }
+
+        .btn-action:hover {
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    .btn-cancel {
+        color: #660000;
+    }
+
+    .btn-confirm {
+        background-color: #660000;
+        color: white;
+    }
+
+        .btn-confirm:hover {
+            background-color: lightgray;
+        }
+
+</style>

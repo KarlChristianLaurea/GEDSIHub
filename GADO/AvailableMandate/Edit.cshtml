@@ -1,0 +1,155 @@
+﻿@* @page
+@model GADApplication.Pages.GADO.AvailableMandate.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_GADOLayout";
+
+}
+
+<!-- Container for title and button on the same line -->
+<div class="d-flex justify-content-between align-items-center mt-1">
+    <!-- Page Title on the left -->
+    <h2 class="mb-0">@ViewData["Title"]</h2>
+</div>
+<hr />
+<div class="editMandate-card mb-4 mx-auto mt-3" style="max-width: 700px;">
+    <!-- Header Container -->
+    <div class="createMandate-header p-1">
+        <span class="mb-0 p-1"></span>
+    </div>
+
+    <div class="card-body">
+        <div class="card-container">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AvailableMandates.Id" />
+                <div class="form-group">
+                    <label asp-for="AvailableMandates.RepublicActAvailable" class="control-label"></label>
+                    <input asp-for="AvailableMandates.RepublicActAvailable" class="form-control" />
+                    <span asp-validation-for="AvailableMandates.RepublicActAvailable" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AvailableMandates.DescriptionAvailable" class="control-label"></label>
+                    <input asp-for="AvailableMandates.DescriptionAvailable" class="form-control" />
+                    <span asp-validation-for="AvailableMandates.DescriptionAvailable" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-save" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} *@
+
+@page
+@model GADApplication.Pages.GADO.AvailableMandate.EditModel
+
+@{
+    ViewData["Title"] = "Edit Mandate";
+    Layout = "_GADOLayout";
+}
+
+<!-- Title and Spacing -->
+<div class="d-flex justify-content-between align-items-center mt-2 mb-3">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+</div>
+
+<hr />
+
+
+<div class="editMandate-card card shadow-sm mx-auto mb-4" style="max-width: 600px;">
+    <div class="editMandate-header text-white p-2">
+        <span class="mb-0 p-2"></span>
+    </div>
+
+    <div class="card-body">
+        <form method="post" id="editMandateForm" class="d-inline">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+            <input type="hidden" asp-for="AvailableMandates.Id" />
+
+            <!-- Republic Act Field -->
+            <div class="form-group mb-3">
+                <label asp-for="AvailableMandates.RepublicActAvailable" class="form-label fw-bold">Republic Act</label>
+                <input asp-for="AvailableMandates.RepublicActAvailable" class="form-control" placeholder="Enter Republic Act number" />
+                <span asp-validation-for="AvailableMandates.RepublicActAvailable" class="text-danger"></span>
+            </div>
+
+            <!-- Description Field -->
+            <div class="form-group mb-3">
+                <label asp-for="AvailableMandates.DescriptionAvailable" class="form-label fw-bold">Description</label>
+                <textarea asp-for="AvailableMandates.DescriptionAvailable" class="form-control" rows="5" placeholder="Enter a description"></textarea>
+                <span asp-validation-for="AvailableMandates.DescriptionAvailable" class="text-danger"></span>
+            </div>
+        </form>
+
+    </div>
+
+    <!-- Action Buttons Below the Card -->
+    <div class="card-footer d-flex justify-content-end">
+        <!-- Back to List Button with Tooltip -->
+        <a asp-page="./Index" class="btn btn-cancel btn-outline-danger bg-light me-2" data-bs-toggle="tooltip" title="Back to list">
+            Cancel
+        </a>
+
+        <!-- Save Button with tooltip -->
+        <button type="submit" form="editMandateForm" class="btn btn-save rounded-3" data-bs-toggle="tooltip" title="Update this mandate">
+            <i class="bi bi-check2-circle me-1"></i> Save
+        </button>
+    </div>
+</div>
+
+
+<!-- Script -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    /* EDIT Card Heading */
+    .editMandate-header {
+        background-color: #660000 !important; /* background color for header */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Container for EDIT mandate */
+    .editMandate-card {
+        border-radius: 10px; /* Adjust this value for more or less rounding */
+        background-color: #f8f9fa; /* Optional: Light background color */
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    }
+
+    /* Edit Card Heading */
+    .card-body{
+        padding: 20px;
+    }
+
+    /* Buttons styles */
+    .btn {
+        transition: all 0.3s ease;
+    }
+        .btn:hover {
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    /* Add Button */
+    .btn-save {
+        background-color: #660000; /* background color for header */
+        color: white;
+    }
+
+        .btn-save:hover {
+            background-color: lightgray;
+        }
+</style>

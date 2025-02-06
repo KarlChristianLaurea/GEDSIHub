@@ -1,0 +1,274 @@
+﻿@page
+@model GADApplication.Pages.GARPage.DownloadGARModel
+@{
+    ViewData["Title"] = "Filter GAR Reports";
+    Layout = "_GADOLayout";
+}
+
+<!-- Header Section with Title -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+    <form method="get" class="position-relative d-flex align-items-center">
+        <div class="form-group mb-0 position-relative w-100 me-2">
+            <label for="year" class="form-label mb-0"> GPB Year:</label>
+            <div class="input-group">
+                <select name="year" id="year" class="form-select rounded-pill border-secondary shadow-sm pe-5">
+                    <option value="">All Years</option>
+                    @foreach (var submissionYear in Model.SubmissionYears)
+                    {
+                        if (Model.YearFilter == submissionYear.ToString())
+                        {
+                            <option value="@submissionYear" selected>@submissionYear</option>
+                        }
+                        else
+                        {
+                            <option value="@submissionYear">@submissionYear</option>
+                        }
+                    }
+                </select>
+
+                <!-- Filter Button for GPB Year -->
+                <button type="submit"
+                        class="btn p-0 border-0 bg-transparent"
+                        data-bs-toggle="tooltip"
+                        title="Filter by year"
+                        style="z-index: 10; ">
+                </button>
+            </div>
+        </div>
+
+        <!-- Responsible Unit Filter -->
+        <div class="form-group mb-0 position-relative w-100 me-2">
+            <label for="responsibleUnit" class="form-label mb-0">Responsible Unit:</label>
+            <div class="input-group">
+                <select name="responsibleUnit" id="responsibleUnit" class="form-select rounded-pill border-secondary shadow-sm pe-5">
+                    <option value="">All Units</option>
+                    @foreach (var unit in Model.ResponsibleUnits)
+                    {
+                        if (Model.UnitFilter == unit)
+                        {
+                            <option value="@unit" selected>@unit</option>
+                        }
+                        else
+                        {
+                            <option value="@unit">@unit</option>
+                        }
+                    }
+                </select>
+
+
+                <!-- Filter Button for Responsible Unit -->
+                <button type="submit"
+                        class="btn p-0 border-0 bg-transparent"
+                        data-bs-toggle="tooltip"
+                        title="Filter by Responsible Unit"
+                        style="z-index: 10;">
+                </button>
+
+            </div>
+        </div>
+
+        <!-- Activity Name Search -->
+        <div class="form-group mb-0 position-relative w-100 me-2">
+            <label for="activityName" class="form-label mb-0">Activity Name:</label>
+            <input type="text" name="activityName" id="activityName" class="form-control rounded-pill border-secondary shadow-sm pe-5" placeholder="Enter activity name" value="@Model.ActivityNameFilter">
+        </div>
+
+        <!-- Search Button -->
+        <button type="submit" class="btn btn-search justify-content-between align-items-center ms-2">
+            <i class="bi bi-search"></i>
+        </button>
+    </form>
+</div>
+<hr />
+
+<!-- Display Filtered Results -->
+@if (Model.GPBs?.Any() == true)
+{
+    <div class="reports-card card bg-white mx-auto mt-4 mb-4">
+        <div class="reports-header p-2"></div>
+
+        <div class="card-body bg-transparent">
+
+            <div class="table-responsive table-wrapper">
+                <table class="table table-hover align-middle">
+                   <thead class="table-light">
+
+                        <tr>
+                            <th>Year</th>
+                            <th>Total Budget</th>
+                            <th>Responsible Unit</th>
+                            <th>Status</th>
+                            <th>Activity Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var gpb in Model.GPBs)
+                        {
+                            @foreach (var activity in gpb.Activities)
+                            {
+                                <tr>
+                                    <td>@gpb.Year</td>
+                                    <td>@gpb.TotalGAAOrBudget</td>
+                                    <td>@gpb.ResponsibleUnit</td>
+                                    <td>@gpb.Status</td>
+                                    <td>@activity.Name</td>
+                                </tr>
+
+                                <!-- Display additional file details as the first row -->
+                                @if (Model.ActivityFiles.ContainsKey(activity.Id) && Model.ActivityFiles[activity.Id].Any())
+                                {
+                                    <tr>
+                                        <td colspan="5">
+                                            <table class="table table-sm">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><strong>Actual Cost:</strong> @Model.ActivityFiles[activity.Id].First().ActualCost?.ToString("C")</td>
+                                                        <td><strong>Actual Result:</strong> @Model.ActivityFiles[activity.Id].First().ActualResult</td>
+                                                        <td><strong>Nature of Event:</strong> @Model.ActivityFiles[activity.Id].First().NatureOfEvent</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Number of Participants:</strong> @Model.ActivityFiles[activity.Id].First().NumberOfParticipants</td>
+                                                        <td><strong>Organizing Team Members:</strong> @Model.ActivityFiles[activity.Id].First().OrganizingTeamMembers</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Display file details as the second row -->
+                                    <tr>
+                                        <td colspan="5">
+                                            <table class="table table-sm mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>File Name</th>
+                                                        <th>Upload Date</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var file in Model.ActivityFiles[activity.Id])
+                                                    {
+                                                        <tr>
+                                                            <td>@file.FileName</td>
+                                                            <td>@file.UploadDate.ToString("g")</td>
+                                                            <td>
+                                                                <a asp-page-handler="PreviewFile" asp-route-fileId="@file.Id" class="btn btn-action btn-sm btn-outline-info btn-preview">Preview</a>
+                                                                <a asp-page-handler="DownloadFile" asp-route-fileId="@file.Id" class="btn btn-action btn-sm btn-download">Download</a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Form for downloading filtered results as PDF -->
+            <form method="post" asp-page-handler="DownloadPdf">
+                <input type="hidden" name="year" value="@Model.YearFilter" />
+                <input type="hidden" name="responsibleUnit" value="@Model.UnitFilter" />
+                <input type="hidden" name="activityName" value="@Model.ActivityNameFilter" />
+                <button type="submit" class="btn btn-sm btn-pdf btn-sm">
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Download PDF
+                </button>
+            </form>
+        </div>
+    </div>
+
+}
+
+
+else
+{
+    <p>No GPB reports found.</p>
+}
+
+
+
+
+
+<style>
+
+    .reports-header{
+        background-color: #660000; /* Background color for header */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .reports-card{
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+    }
+
+    .table{
+        border-radius: 10px;
+    }
+
+    .btn-pdf {
+        color: #660000;
+        border-color: #660000;
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transition: all 0.3s ease;
+    }
+
+        .btn-pdf:hover {
+            color: #660000;
+            border-color: #660000;
+            border-radius: 10px; /* Same rounded effect for consistency */
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    .btn-action {
+        transition: all 0.3s ease;
+        border-radius: 10px; /* Same rounded effect for consistency */
+    }
+
+        .btn-action:hover {
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    .btn-download {
+        background-color: #660000;
+        color: white;
+    }
+
+        .btn-download:hover {
+            background-color: lightgray;
+        }
+
+    .btn-search {
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+    }
+
+        .btn-search:hover {
+            transform: translateY(-2px); /* Lift effect */
+            background-color: lightgray;
+        }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .table-bordered {
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 6px 6px rgba(0, 0, 0, 0.04);
+    }
+
+@*     .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    } *@
+
+</style>

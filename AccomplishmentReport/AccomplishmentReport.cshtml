@@ -1,0 +1,87 @@
+﻿@page "{gpbId:int}"
+@model GADApplication.Pages.AccomplishmentPage.AccomplishmentReportModel
+@{
+    ViewData["Title"] = "Create Accomplishment Report";
+}
+
+<h1 class="text-center mb-4">Create Accomplishment Report</h1>
+
+<div class="container">
+    <!-- Add enctype to handle file uploads -->
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <input type="hidden" asp-for="AccomplishmentReport.GPBId" />
+
+                <h4>Activities</h4>
+
+                @for (int i = 0; i < Model.AccomplishmentReport.Activities.Count; i++)
+                {
+                    var activity = Model.AccomplishmentReport.Activities[i];
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h5>Activity: @activity.ActivityName</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>Mandates:</h6>
+                            <ul>
+                                @foreach (var mandate in activity.Mandates)
+                                {
+                                    <li>@mandate.Description</li>
+                                }
+                            </ul>
+                            <input type="hidden" asp-for="AccomplishmentReport.Activities[i].ActivityId" />
+
+                            <div class="form-group">
+                                <label asp-for="AccomplishmentReport.Activities[i].ActualResult" class="control-label"></label>
+                                <input asp-for="AccomplishmentReport.Activities[i].ActualResult" class="form-control" />
+                                <span asp-validation-for="AccomplishmentReport.Activities[i].ActualResult" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="AccomplishmentReport.Activities[i].ActualCost" class="control-label"></label>
+                                <input asp-for="AccomplishmentReport.Activities[i].ActualCost" class="form-control" />
+                                <span asp-validation-for="AccomplishmentReport.Activities[i].ActualCost" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="AccomplishmentReport.Activities[i].NatureOfEvent" class="control-label"></label>
+                                <input asp-for="AccomplishmentReport.Activities[i].NatureOfEvent" class="form-control" />
+                                <span asp-validation-for="AccomplishmentReport.Activities[i].NatureOfEvent" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="AccomplishmentReport.Activities[i].NumberOfParticipants" class="control-label"></label>
+                                <input asp-for="AccomplishmentReport.Activities[i].NumberOfParticipants" class="form-control" />
+                                <span asp-validation-for="AccomplishmentReport.Activities[i].NumberOfParticipants" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="AccomplishmentReport.Activities[i].OrganizingTeamMembers" class="control-label"></label>
+                                <input asp-for="AccomplishmentReport.Activities[i].OrganizingTeamMembers" class="form-control" />
+                                <span asp-validation-for="AccomplishmentReport.Activities[i].OrganizingTeamMembers" class="text-danger"></span>
+                            </div>
+
+                            <!-- File upload input -->
+                            <div class="form-group">
+                                <label asp-for="AccomplishmentReport.Activities[i].AccomplishmentFile" class="control-label"></label>
+                                <input type="file" asp-for="AccomplishmentReport.Activities[i].AccomplishmentFile" class="form-control" />
+                                <span asp-validation-for="AccomplishmentReport.Activities[i].AccomplishmentFile" class="text-danger"></span>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group mt-4">
+                    <input type="submit" value="Submit Accomplishment Report" class="btn btn-primary btn-lg btn-block" />
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,197 @@
+﻿@page
+@model GADApplication.Pages.GPBPage.IndexModel
+@{
+    ViewData["Title"] = "Budget Plan List";
+    Layout = "_GADOLayout";
+}
+
+<!-- Header Section with Title -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+    <div class="d-flex ms-auto">
+        <!-- Added d-flex class for horizontal alignment -->
+        <a asp-page="/GPBPage/FilterAndDownloadGPB" class="btn btn-sm btn-submissions align-items-center bg-light fw-bold me-3 mt-1" data-bs-toggle="tooltip" title="View GPB Submissions by year">
+            Compiled GPB Submissions
+        </a>
+    </div>
+</div>
+
+
+<!-- Card for GPB List -->
+<div class="gpbList-card bg-white mx-auto mt-4 mb-4">
+    <div class="gpbList-header p-2"></div>
+
+    <div class="card-body bg-transparent p-2">
+        <!-- Scrollable Table Container -->
+        <div class="table-responsive table-wrapper">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>GPB ID</th>
+                        <th>
+                            @* Year Sorting Links *@
+                            <a asp-page="/GPBPage/Index" asp-route-sortOrder="year_asc" class="text-dark text-decoration-none" data-bs-toggle="tooltip" title="Sort Ascending">
+                                Year <i class="bi bi-arrow-up me-1" style="color: #660000"></i>
+                            </a>
+                            <a asp-page="/GPBPage/Index" asp-route-sortOrder="year_desc" class="text-decoration-none ms-1" data-bs-toggle="tooltip" title="Sort Descending">
+                                <i class="bi bi-arrow-down" style="color: #660000"></i>
+                            </a>
+                        </th>
+                        <th>Total Budget</th>
+                        <th>
+                            @* Responsible Unit Sorting Links *@
+                            <a asp-page="/GPBPage/Index" asp-route-sortOrder="responsible_asc" class="text-dark text-decoration-none" data-bs-toggle="tooltip" title="Sort A-Z">
+                                Responsible Unit <i class="bi bi-arrow-up me-1" style="color: #660000"></i>
+                            </a>
+                            <a asp-page="/GPBPage/Index" asp-route-sortOrder="responsible_desc" class="text-decoration-none ms-1" data-bs-toggle="tooltip" title="Sort Z-A">
+                                <i class="bi bi-arrow-down" style="color: #660000"></i>
+                            </a>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var gpbRecord in Model.GPBs)
+                    {
+                        <tr>
+                            <td>@gpbRecord.Id</td>
+                            <td>@gpbRecord.Year</td>
+                            <td>₱@String.Format("{0:N0}", gpbRecord.TotalGAAOrBudget)</td>
+                            <td>@gpbRecord.ResponsibleUnit</td>
+                            <!-- Action Buttons -->
+                            <td>
+                                @* <a asp-page="/GPBPage/Details" asp-route-id="@gpbRecord.Id" class="btn btn-sm btn-action btn-view me-1" data-bs-toggle="tooltip" title="View Details">
+                                    <i class="bi bi-eye-fill fs-6 me-1" style="color: #4CAF50;"></i> View
+                                </a> *@
+                                <a asp-page="/GPBPage/Review" asp-route-id="@gpbRecord.Id" class="btn btn-sm btn-action btn-review me-1" data-bs-toggle="tooltip" title="Review and edit details">
+                                    <i class="bi bi-pencil-fill fs-6 me-1" style="color:#6c757d;"></i> Review
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Container for GPB list header */
+    .gpbList-header {
+        background-color: #660000; /* Background color for header */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Container for GPB list table */
+    .gpbList-card {
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+        width: 75rem;
+        max-height: 35rem; /* Limits the height of the card */
+        overflow: hidden;
+    }
+
+    /* Scrollable table body */
+    .table-wrapper {
+        max-height: 28rem; /* Adjust the height as needed */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    /* Keep the table header fixed */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    /* Custom rounded styling for the table */
+    .table {
+        border-radius: 8px; /* Adjust as desired */
+    }
+
+    /* Enhanced view Buttons */
+    .btn-view {
+        background-color: #d6e9c6; /* Light green background */
+        color: #4A4A4A;
+        transition: all 0.3s ease; /* Smooth transition for hover effects */
+        border-radius: 40px; /* Pill-shaped buttons */
+        font-weight: 500;
+        padding: 0.1rem 0.72rem;
+    }
+
+        /* Hover Effect for view Buttons */
+        .btn-view:hover {
+            transform: translateY(-2px); /* Slight lift effect on hover */
+            background-color: #a5d6a7; /* Light green background */
+        }
+
+    /* Enhanced edit Button */
+    .btn-review {
+        /* background-color: #d6e9c6; /* Light green background */
+        background-color: #dee2e6;
+        color: #4A4A4A;
+        transition: all 0.3s ease; /* Smooth transition for hover effects */
+        border-radius: 40px; /* Pill-shaped buttons */
+        font-weight: 500;
+        padding: 0.1rem 0.72rem;
+    }
+
+        .btn-review:hover {
+            transform: translateY(-2px); /* Slight lift effect on hover */
+            background-color: #adb5bd;
+        }
+
+
+    /* Submission Year Button */
+    .btn-create {
+        background-color: #660000;
+        color: white;
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+    }
+
+        .btn-create:hover {
+            background-color: lightgray;
+            transform: translateY(-2px); /* Lift effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+            0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+        }
+
+    /* Create Button Styling */
+    .btn-submissions {
+        color: #660000;
+        border-color: #660000;
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+    }
+
+        .btn-submissions:hover {
+            transform: translateY(-2px); /* Lift effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+            0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+        }
+
+
+    media (max-width: 768px) {
+        .gpbList-card
+
+    {
+        width: 100%;
+        max-height: none;
+    }
+
+    .btn-create, .btn-submissions {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    }
+    }
+</style>

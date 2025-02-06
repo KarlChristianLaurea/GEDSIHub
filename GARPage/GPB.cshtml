@@ -1,0 +1,58 @@
+﻿@page
+@model GADApplication.Pages.GARPage.GPBModel
+
+@{
+    ViewData["Title"] = "GPB";
+    Layout = "_GADOLayout";
+}
+
+<h1>GPB</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GPB[0].Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GPB[0].TotalGAAOrBudget)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GPB[0].MFOPAPOrPPA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GPB[0].ResponsibleUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GPB[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.GPB)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalGAAOrBudget)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MFOPAPOrPPA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResponsibleUnit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-page="/GPBPage/Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="/GARPage/FileUpload" asp-route-gpbId="@item.Id">Upload Files</a> <!-- Added link for uploading files -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

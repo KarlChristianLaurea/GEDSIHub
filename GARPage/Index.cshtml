@@ -1,0 +1,42 @@
+﻿@page "{gpbId}"
+@model GADApplication.Pages.GARPage.IndexModel
+@{
+    ViewData["Title"] = "Submitted GPB Files";
+    Layout = "_GADOLayout";
+}
+
+<h2>Submitted Files for GPB @Model.GPBId</h2>
+
+@if (Model.UploadedFiles.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Activity Name</th>
+                <th>File Name</th>
+                <th>Upload Date</th>
+                <th>Size (KB)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var file in Model.UploadedFiles)
+            {
+                <tr>
+                    <td>@file.Activity.Name</td>
+                    <td>@file.FileName</td>
+                    <td>@file.UploadDate.ToShortDateString()</td>
+                    <td>@(file.FileSize / 1024.0).ToString("F2")</td>
+                    <td>
+                        <a asp-page="/GARPage/FileDownload" asp-route-id="@file.Id" class="btn btn-sm btn-primary">Download</a>
+                        <a asp-page="/GARPage/FilePreview" asp-route-id="@file.Id" class="btn btn-sm btn-secondary">Preview</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No files have been uploaded for this GPB yet.</p>
+}

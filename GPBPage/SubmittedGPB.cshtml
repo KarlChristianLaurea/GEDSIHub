@@ -1,0 +1,176 @@
+﻿@page
+@model GADApplication.Pages.GPBPage.SubmittedGPBModel
+@{
+    TempData.Keep("ErrorMessage");
+    ViewData["Title"] = "Submitted GPBs";
+    Layout = "_FPSLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h4 class="mb-0">@ViewData["Title"]</h4>
+    <a asp-page="./Create" asp-route-layout="FPS" class="btn btn-create d-flex align-items-center me-3">
+        <i class="bi bi-plus-circle me-2"></i> Create
+    </a>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger mt-4">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="gpbList-card bg-white mx-auto mt-4 mb-4">
+    <div class="gpbList-header p-2"></div>
+    <div class="card-body p-2">
+        <div class="table-responsive table-wrapper">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>GPB ID</th>
+                        <th>Year</th>
+                        <th>Total Budget</th>
+                        <th>Status</th>
+                        <th>Admin Comments</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var gpb in Model.GPBs)
+                    {
+                        <tr>
+                            <td>@gpb.Id</td>
+                            <td>@gpb.Year</td>
+                            <td>@String.Format("{0:N0}", gpb.TotalGAAOrBudget)</td>
+
+                            <!-- Status Column -->
+                            <td>
+                                @* @gpb.Status  *@
+                                @if (gpb.Status == "Approved with Files")
+                                {
+                                    <span class="badge rounded-pill bg-success">Approved with files</span>
+                                }
+                                else if (gpb.Status == "Rejected with Files")
+                                {
+                                    <span class="badge rounded-pill bg-danger">Rejected</span>
+                                }
+                                else if (gpb.Status == "Pending with File Upload")
+                                {
+                                    <span class="badge rounded-pill text-bg-warning">Pending w/ File Upload</span>
+                                }
+                                else if (gpb.Status == "Pending")
+                                {
+                                    <span class="badge rounded-pill bg-warning text-dark">Pending</span>
+                                }
+                                else
+                                {
+                                    <span class="badge rounded-pill bg-secondary">Under Review</span>
+                                }
+
+
+                            </td>
+
+                            <td>@gpb.AdminComments</td>
+                            <td>
+                                @if (gpb.Status == "Draft")
+                                {
+                                    <a asp-page="/GPBPage/Edit" asp-route-id="@gpb.Id" class="text-sm" style="color:#660000;">Edit & Submit</a>
+                                }
+                                else if (gpb.Status == "Pending" && gpb.ApprovalStatus == null)
+                                {
+                                    <span class="text-warning text-sm">Pending Review</span>
+                                }
+                                else if (gpb.ApprovalStatus == "Needs Revision" && gpb.Status != "Pending")
+                                {
+                                    <a asp-page="/GPBPage/Edit" asp-route-id="@gpb.Id" class="text-secondary text-sm">Edit & Resubmit</a>
+                                }
+                                else if (gpb.ApprovalStatus == "Approved and Ready for File Upload")
+                                {
+                                    <!-- Link to view GPB details -->
+                                    <a asp-page="/GPBPage/Details" asp-route-id="@gpb.Id" class="text-info text-sm">View Details</a>
+                                    <!-- Link to upload files -->
+                                    <a asp-page="/GARPage/FileUpload" asp-route-gpbId="@gpb.Id" class="text-success text-sm ms-2">Upload Files</a>
+                                }
+                                else if (gpb.ApprovalStatus == "Rejected with Files")
+                                {
+                                    <a asp-page="/GARPage/FileUpload" asp-route-gpbId="@gpb.Id" class="text-danger text-sm">Resubmit Files</a>
+                                }
+                                else if (gpb.ApprovalStatus == "Approved with Files")
+                                {
+                                    <a asp-page="/GARPage/FileDetails" asp-route-id="@gpb.Id" class="text-info text-sm">View Details</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted text-sm">Under Review</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<style>
+    /* Container for GPB list header */
+    .gpbList-header {
+        background-color: #660000 !important;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    /* Container for GPB list card */
+    .gpbList-card {
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 6px 6px rgba(0, 0, 0, 0.04);
+        width: 75rem;
+        max-height: 35rem;
+        overflow: hidden;
+    }
+
+    /* Scrollable table body */
+    .table-wrapper {
+        max-height: 28rem;
+        overflow-y: auto;
+    }
+
+    /* Keep table headers fixed */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #f8f9fa;
+    }
+
+    /* Custom rounded styling for the table */
+    .table {
+        border-radius: 8px;
+    }
+
+        /* Row hover effect */
+        .table tbody tr:hover {
+            background-color: rgba(102, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+    /* Button styling for consistency */
+    .btn-create {
+        background-color: #660000;
+        color: white;
+    }
+
+        .btn-create:hover {
+            background-color: lightgray;
+        }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var errorMessage = "@TempData["ErrorMessage"]";
+            if (errorMessage && errorMessage.trim() !== "") {
+                $('#errorModal').modal('show');
+            }
+        });
+    </script>
+}

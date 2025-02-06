@@ -1,0 +1,84 @@
+﻿@page
+@model AddEventModel
+@{
+    ViewData["Title"] = "Add New Event";
+    Layout = "_GADOLayout";
+
+}
+
+<!-- Header Section with Title -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+</div>
+<hr />
+
+<div class="addEvent-card card mx-auto mt-4 w-50">
+    <div class="card-header p-2"></div>
+    <div class="card-body position-relative">
+        <form method="post" class="h-25">
+            <div class="mb-3">
+                <label for="Name" class="form-label">Title</label>
+                <input type="text" id="Name" name="EventData.Name" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <input type="text" id="Description" name="EventData.Description" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label for="Location" class="form-label">Location</label>
+                <input type="text" id="Location" name="EventData.Location" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="Attendees" class="form-label">Attendees</label>
+                <input type="number" id="Attendees" name="EventData.Attendees" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="Start" class="form-label">Start Date and Time</label>
+                <input type="datetime-local" id="Start" name="EventData.Start" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="End" class="form-label">End Date and Time</label>
+                <input type="datetime-local" id="End" name="EventData.End" class="form-control" required />
+            </div>
+        </form>
+
+    </div>
+
+    <div class="card-footer d-flex justify-content-end">
+        <form method="post">
+            <a href="/Calendar/Calendar" class="btn btn-action btn-cancel bg-white rounded-3 me-1">Cancel</a>
+            <button type="submit" class="btn btn-action btn-submit rounded-3">Submit</button>
+        </form>
+
+    </div>
+</div>
+
+
+<style>
+    .card-header {
+        background-color: #660000;
+    }
+
+    .btn-action {
+        transition: all 0.3s ease;
+    }
+
+        .btn-action:hover {
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    .btn-cancel {
+        color: #660000;
+    }
+
+    .btn-submit {
+        background-color: #660000;
+        color: white;
+    }
+
+        .btn-submit:hover {
+            background-color: lightgray;
+        }
+
+</style>
+

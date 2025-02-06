@@ -1,0 +1,14 @@
+﻿@page "{id:int}"
+@model DeleteEventModel
+@{
+    ViewData["Title"] = "Delete Event";
+}
+
+<h2 class="text-danger">Delete Event</h2>
+
+<p>Are you sure you want to delete the event <strong>@Model.EventData.Name</strong>?</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="/Calendar" class="btn btn-secondary">Cancel</a>
+</form>

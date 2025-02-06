@@ -1,0 +1,126 @@
+﻿@page
+@model CalendarModel
+@{
+    ViewData["Title"] = "Event Management";
+    Layout = "_GADOLayout";
+    @using Newtonsoft.Json;
+
+    // Serialize the upcoming events to JSON to pass to FullCalendar
+    var calendarEventsJson = JsonConvert.SerializeObject(Model.UpcomingEvents.Select(e => new
+    {
+        title = e.Name,
+        start = e.Start.ToString("yyyy-MM-ddTHH:mm:ss"),  // FullCalendar expects the format as yyyy-MM-ddTHH:mm:ss for datetime
+        end = e.End.ToString("yyyy-MM-ddTHH:mm:ss"),  // Using End date and time
+        description = e.Description,
+        attendees = e.Attendees
+    }));
+}
+
+<!-- Header Section with Title -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h2 class="mb-0">@ViewData["Title"]</h2>
+    <div class="d-flex ms-auto">
+        <!-- Added d-flex class for horizontal alignment -->
+        <a asp-page="/Calendar/AddEvent" class="btn btn-newEvent rounded-3 align-items-center fw-bold bg-white me-3 mt-1" style="transition: background-color 0.3s ease, color 0.3s ease;" data-bs-toggle="tooltip" title="Add new event in Calendar">
+            <i class="bi bi-plus"></i> Add Event
+        </a>
+    </div>
+</div>
+
+    <div class="container mt-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <div id="eventCalendar" style="height: 500px;"></div>
+            </div>
+        </div>
+
+        <!-- Upcoming Events Section -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Upcoming Events</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="upcomingEventsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Location</th>
+                                <th>Attendees</th>
+                                <th>Status</th>
+                                <th>Actions</th> <!-- New column for actions -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var upcomingEvent in Model.UpcomingEvents)
+                            {
+                                <tr>
+                                    <td>@upcomingEvent.Name</td>
+                                    <td>@upcomingEvent.Start.ToString("MMMM dd, yyyy HH:mm")</td>
+                                    <td>@upcomingEvent.End.ToString("MMMM dd, yyyy HH:mm")</td>
+                                    <td>@upcomingEvent.Location</td>
+                                    <td>@upcomingEvent.Attendees</td>
+                                    <td>
+                                        <span class="badge bg-@(@upcomingEvent.IsConfirmed ? "success" : "warning")">
+                                            @(@upcomingEvent.IsConfirmed ? "Confirmed" : "Pending")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <!-- Edit Button -->
+                                        <a href="/Calendar/EditEvent/@upcomingEvent.EventId" class="btn btn-sm btn-warning">Edit</a>
+
+
+                                        <!-- Delete Button -->
+                                        <a href="/Calendar/DeleteEvent/@upcomingEvent.EventId" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inject events from the backend
+            const eventsFromBackend = @Html.Raw(calendarEventsJson);
+
+            const calendarEl = document.getElementById('eventCalendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: eventsFromBackend,  // Your events are loaded here
+                dateClick: function (info) {
+                    console.log("Date clicked:", info.dateStr);
+                }
+            });
+            calendar.render();
+        });
+    </script>
+
+
+
+
+
+
+<style>
+    .card-header{
+        background-color: #660000;
+
+    }
+
+    .btn-newEvent {
+        border: 1px solid #660000;
+        color: #660000;
+        transition: all 0.3s ease;
+    }
+
+        .btn-newEvent:hover {
+            background-color: lightgray; /* Slightly darker background */
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+</style>

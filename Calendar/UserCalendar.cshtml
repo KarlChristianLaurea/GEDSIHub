@@ -1,0 +1,81 @@
+﻿@page
+@model CalendarModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_FPSLayout";
+    @using Newtonsoft.Json;
+
+    // Serialize the upcoming events to JSON to pass to FullCalendar
+    var calendarEventsJson = JsonConvert.SerializeObject(Model.UpcomingEvents.Select(e => new
+    {
+        title = e.Name,
+        start = e.Start.ToString("yyyy-MM-ddTHH:mm:ss"),
+        end = e.End.ToString("yyyy-MM-ddTHH:mm:ss"),
+        description = e.Description,
+        attendees = e.Attendees,
+    }));
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+
+
+    <!-- Header Section with Title -->
+    <div class="d-flex justify-content-between align-items-center mt-2">
+        <h2 class="mb-0">@ViewData["Title"]</h2>
+        <div class="d-flex ms-auto">
+            <!-- Added d-flex class for horizontal alignment -->
+            <a asp-page="/MyGPB" class="btn btn-header btn-mygpb align-items-center bg-light fw-bold px-4 me-3 mt-1" data-bs-toggle="tooltip" title="View Submissions Settings">
+                My GPB
+            </a>
+            <a asp-page="/MyGAR" class="btn btn-header btn-mygar d-flex align-items-center bg-light fw-bold px-4 me-3 mt-1" data-bs-toggle="tooltip" title=" View Calendar">
+                My GAR
+            </a>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div id="eventCalendar" style="height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inject events from the backend
+            const eventsFromBackend = @Html.Raw(calendarEventsJson);
+
+            const calendarEl = document.getElementById('eventCalendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: eventsFromBackend,
+                dateClick: function (info) {
+                    console.log("Date clicked:", info.dateStr);
+                }
+            });
+            calendar.render();
+        });
+    </script>
+</body>
+</html>
+
+<style>
+    .btn-header{
+        color: #660000;
+        border-color: #660000;
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+    }
+
+        .btn-header:hover {
+            transform: translateY(-2px); /* Lift effect */
+        }
+</style>

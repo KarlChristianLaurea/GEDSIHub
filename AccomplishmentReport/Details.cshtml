@@ -1,0 +1,60 @@
+﻿@page "{gpbId:int}"
+@model GADApplication.Pages.AccomplishmentPage.DetailsModel
+@{
+    ViewData["Title"] = "Accomplishment Details";
+}
+
+<h1 class="text-center mb-4">Accomplishment Details</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <h4>Activities</h4>
+
+            @foreach (var activity in Model.AccomplishmentReport.Activities)
+            {
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Activity: @activity.ActivityName</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Mandates:</h6>
+                        <ul>
+                            @foreach (var mandate in activity.Mandates)
+                            {
+                                <li>@mandate.Description</li>
+                            }
+                        </ul>
+
+                        <h6>Details:</h6>
+                        <ul>
+                            <li>Actual Result: @activity.ActualResult</li>
+                            <li>Actual Cost: @activity.ActualCost</li>
+                            <li>Nature of Event: @activity.NatureOfEvent</li>
+                            <li>Number of Participants: @activity.NumberOfParticipants</li>
+                            <li>Organizing Team Members: @activity.OrganizingTeamMembers</li>
+                        </ul>
+
+                        <!-- File actions: Preview and Download -->
+                        @if (activity.AccomplishmentFile != null)
+                        {
+                            <h6>File:</h6>
+                            <!-- Preview the file (if it's a PDF) -->
+                            @if (activity.IsPdf)
+                            {
+                                <a href="@Url.Page("/AccomplishmentPage/AccomplishmentDetails", "File", new { id = activity.ActivityId })" target="_blank" class="btn btn-primary">Preview PDF</a>
+                            }
+                            <!-- Download the file -->
+                            <a href="@Url.Page("/AccomplishmentPage/AccomplishmentDetails", "DownloadFile", new { id = activity.ActivityId })" class="btn btn-success">Download File</a>
+                        }
+                        else
+                        {
+                            <p>No file uploaded for this activity.</p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

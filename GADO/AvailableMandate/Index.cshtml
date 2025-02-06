@@ -1,0 +1,138 @@
+﻿@page
+@model GADApplication.Pages.GADO.AvailableMandate.IndexModel
+
+@{
+    ViewData["Title"] = "Mandates";
+    Layout = "_GADOLayout";
+}
+
+<!-- Header Section with Title and Create Button -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+    <a asp-page="./Create" class="btn btn-create d-flex align-items-center me-3 " aria-label="Create a new mandate" data-bs-toggle="tooltip" title="Create new mandate">
+        <i class="bi bi-plus-circle me-2"></i> Create
+    </a>
+</div>
+
+<!-- Card Container for Table -->
+<div class="mandates-card bg-white mx-auto mt-4 mb-4">
+    <div class="mandates-header p-2"></div>
+
+    <div class="card-body mx-auto p-2">
+        <!-- Scrollable Table Container -->
+        <div class="table-responsive table-wrapper">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="col-md-2">Republic Act</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.AvailableMandates != null && Model.AvailableMandates.Any())
+                    {
+                        @foreach (var item in Model.AvailableMandates)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.RepublicActAvailable)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DescriptionAvailable)</td>
+                                <td>
+                                    <div class="d-flex align-items-center" style="margin-left: -4px;">
+                                        <!-- View Details Icon -->
+                                        <a asp-page="./Details" asp-route-id="@item.Id" class="d-flex btn btn-sm btn-icon-only btn-action btn-view" aria-label="View details" data-bs-toggle="tooltip" title="View mandate details">
+                                            <i class="bi bi-eye-fill" style="color: #4CAF50;"></i>
+                                        </a>
+
+                                        <!-- Edit Icon -->
+                                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-icon-only btn-action btn-edit" aria-label="Edit" data-bs-toggle="tooltip" title="Edit mandate">
+                                            <i class="bi bi-pencil-fill" style="color:#6c757d;"></i>
+                                        </a>
+                                        <!-- Delete Icon -->
+                                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-icon-only btn-action btn-delete" aria-label="Delete" data-bs-toggle="tooltip" title="Delete mandate">
+                                            <i class="bi bi-trash3-fill" style="color:#800000;"></i>
+                                        </a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No available mandates found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+    <style>
+        /* Container for Mandates list header */
+        .mandates-header {
+            background-color: #660000;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        /* Container for Mandates list table */
+        .mandates-card {
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+                        0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+            width: 75rem;
+            max-height: 35rem; /* Limits the height of the card */
+            overflow: hidden;
+        }
+
+        /* Scrollable table body */
+        .table-wrapper {
+            max-height: 28rem; /* Adjust the height as needed */
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Keep the table header fixed */
+        .table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        /* Custom rounded styling for the table */
+        .table {
+            border-radius: 8px; /* Adjust as desired */
+        }
+
+        /* Create Button Styling */
+        .btn-create {
+            background-color: #660000;
+            color: white;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+                        0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+        }
+
+            .btn-create:hover {
+                background-color: lightgray;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 6px 6px rgba(0, 0, 0, 0.04);
+            }
+
+        /* Enhanced Aesthetic Buttons for Actions (Icon Only) */
+        .btn-action {
+            transition: all 0.3s ease;
+        }
+
+            /* Hover Effect for Buttons */
+            .btn-action:hover {
+                transform: translateY(-2px);
+            }
+
+
+    </style>

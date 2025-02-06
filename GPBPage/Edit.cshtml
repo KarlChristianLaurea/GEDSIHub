@@ -1,0 +1,441 @@
+﻿@page "{id:int}"
+@model GADApplication.Pages.GPBPage.EditModel
+@{
+    ViewData["Title"] = "Edit GPB";
+    Layout = "_FPSLayout";
+    var currentYear = DateTime.Now.Year;
+}
+
+<!-- Header Section -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+</div>
+<hr />
+
+<div class="container mt-2">
+    <form method="post" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="GPB.Id" />
+
+        <!-- GPB Information Section -->
+        <div class="info-card card mb-4">
+            <div class="card-header" style="background-color: #660000;"></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- GPB Year -->
+                        <div class="form-group">
+                            <label asp-for="GPB.Year" class="control-label"></label>
+                            <input asp-for="GPB.Year" class="form-control" min="2024" max="2099" type="number"
+                                   maxlength="4" readonly />
+                            <span asp-validation-for="GPB.Year" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Total Budget -->
+                        <div class="form-group">
+                            <label asp-for="GPB.TotalGAAOrBudget" class="control-label"></label>
+                            <input asp-for="GPB.TotalGAAOrBudget" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="GPB.TotalGAAOrBudget" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- MFO, PAP, or PPA -->
+                        <div class="form-group">
+                            <label asp-for="GPB.MFOPAPOrPPA" class="control-label"></label>
+                            <input asp-for="GPB.MFOPAPOrPPA" class="form-control" value="PUP" readonly />
+                            <span asp-validation-for="GPB.MFOPAPOrPPA" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Responsible Unit -->
+                        <div class="form-group">
+                            <label asp-for="GPB.ResponsibleUnit" class="control-label"></label>
+                            <input asp-for="GPB.ResponsibleUnit" class="form-control" readonly />
+                            <span asp-validation-for="GPB.ResponsibleUnit" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities Section -->
+        <div class="activity-card card mb-4">
+            <div class="card-header text-white d-flex justify-content-between" style="background-color: #660000;">
+                <h5>Activities</h5>
+                <button type="button" class="btn btn-light btn-sm" onclick="addActivity()">
+                    <i class="bi bi-plus me-1"></i>Add Activity
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="activities-container">
+                    @for (int i = 0; i < Model.GPB.Activities.Count; i++)
+                    {
+                        <div class="card mt-0 activity-card" data-index="@i">
+                            <div class="card-header bg-light d-flex justify-content-between">
+                                <h5>Activity @(i + 1)</h5>
+                                @if (i > 0)
+                                {
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteActivity(@i)">
+                                        Delete
+                                    </button>
+                                }
+                            </div>
+                            <div class="card-body">
+                                <!-- Hidden ID -->
+                                <input type="hidden" asp-for="GPB.Activities[i].Id" />
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <!-- Activity Type -->
+                                        <div class="form-group">
+                                            <label asp-for="GPB.Activities[i].ActivityType" class="control-label"></label>
+                                            <select asp-for="GPB.Activities[i].ActivityType" class="form-control">
+                                                <option value="">Select Activity Type</option>
+                                                <option value="Client-Focused">Client-Focused</option>
+                                                <option value="Attributed_Based">Attributed_Based</option>
+                                                <option value="Organization-Focused">Organization-Focused</option>
+                                            </select>
+                                            <span asp-validation-for="GPB.Activities[i].ActivityType" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <!-- Cause -->
+                                        <div class="form-group">
+                                            <label asp-for="GPB.Activities[i].Cause" class="control-label">Cause of Gender Issue</label>
+                                            <input asp-for="GPB.Activities[i].Cause" class="form-control"
+                                                   oninput="this.value = this.value.replace(/[^a-zA-Z0-9., ]/g, '')" />
+                                            <span asp-validation-for="GPB.Activities[i].Cause" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <!-- Activity Name -->
+                                        <div class="form-group">
+                                            <label asp-for="GPB.Activities[i].Name" class="control-label">Activity Name</label>
+                                            <input asp-for="GPB.Activities[i].Name" class="form-control" />
+                                            <span asp-validation-for="GPB.Activities[i].Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <!-- Objective -->
+                                        <div class="form-group">
+                                            <label asp-for="GPB.Activities[i].Objective" class="control-label"></label>
+                                            <input asp-for="GPB.Activities[i].Objective" class="form-control" />
+                                            <span asp-validation-for="GPB.Activities[i].Objective" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <!-- Performance Indicators -->
+                                        <div class="form-group">
+                                            <label asp-for="GPB.Activities[i].PerformanceIndicators" class="control-label">Performance Indicators</label>
+                                            <input asp-for="GPB.Activities[i].PerformanceIndicators" class="form-control" />
+                                            <span asp-validation-for="GPB.Activities[i].PerformanceIndicators" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <!-- Budget -->
+                                        <div class="form-group">
+                                            <label asp-for="GPB.Activities[i].Budget" class="control-label">Estimated Budget</label>
+                                            <input asp-for="GPB.Activities[i].Budget" class="form-control" type="number" step="0.01" />
+                                            <span asp-validation-for="GPB.Activities[i].Budget" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <!-- Source Budget -->
+                                        <div class="form-group">
+                                            <label asp-for="GPB.Activities[i].SourceBudget" class="control-label">Source Budget</label>
+                                            <select asp-for="GPB.Activities[i].SourceBudget" class="form-control">
+                                                <option value="">Select Source</option>
+                                                <option value="MOOE">MOOE</option>
+                                                <option value="GAA">GAA</option>
+                                            </select>
+                                            <span asp-validation-for="GPB.Activities[i].SourceBudget" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mandates Section -->
+                                <!-- Link to available mandates list -->
+                                <a asp-page="/GADO/AvailableMandate/IndexUser" class="mt-4" style="color:#660000;" target="_blank">
+                                    <h6 class="mt-4">Mandates</h6>
+                                </a>
+                                <div class="mt-0">
+                                    <div id="mandates-container-@i">
+                                        @for (int j = 0; j < Model.GPB.Activities[i].Mandates.Count; j++)
+                                        {
+                                            <div class="form-group mandate-group" data-mandate-index="@j">
+                                                <label asp-for="GPB.Activities[i].Mandates[j].RepublicAct" class="control-label">Mandate Description</label>
+                                                <input asp-for="GPB.Activities[i].Mandates[j].RepublicAct" class="form-control" list="ra-suggestions-@i-@j" />
+                                                <span asp-validation-for="GPB.Activities[i].Mandates[j].RepublicAct" class="text-danger"></span>
+
+                                                <label asp-for="GPB.Activities[i].Mandates[j].Description" class="control-label"></label>
+                                                <input asp-for="GPB.Activities[i].Mandates[j].Description" class="form-control" />
+                                                <span asp-validation-for="GPB.Activities[i].Mandates[j].Description" class="text-danger"></span>
+
+                                                @if (j > 0)
+                                                {
+                                                    <button type="button" class="btn btn-danger btn-sm mt-2" onclick="deleteMandate(@i, @j)">Delete Mandate</button>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                    <button type="button" class="btn btn-secondary btn-sm mt-3" onclick="addMandate(@i)">Add Mandate</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="form-group text-center mt-4">
+            <input type="submit" name="action" value="Update & Submit" class="btn btn-update" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateYearInput(input) {
+            input.value = input.value.replace(/\D/g, '').slice(0, 4);
+        }
+        function restrictInputToTextAndNumbers(event) {
+            const regex = /^[a-zA-Z0-9., ]$/;
+            const key = event.key;
+            if (!regex.test(key) && key !== 'Backspace' && key !== 'Delete' && key !== 'ArrowLeft' && key !== 'ArrowRight') {
+                event.preventDefault();
+            }
+        }
+
+        function validateTextInput(input) {
+            input.value = input.value.replace(/[^a-zA-Z0-9., ]/g, '');
+        }
+
+        const RAList = [
+            'R.A. 10354', 'R.A. 10364', 'R.A. 10398',
+            'R.A. 11036', 'R.A. 11166', 'R.A. 11313',
+            'R.A. 11394', 'R.A. 6725', 'R.A. 6949',
+            'R.A. 7877', 'R.A. 8504', 'R.A. 9262',
+            'R.A. 9710'
+        ];
+
+        function filterRASuggestions(activityIndex, mandateIndex) {
+            const inputField = document.querySelector(`#ra-input-${activityIndex}-${mandateIndex}`);
+            const dataList = document.querySelector(`#ra-suggestions-${activityIndex}-${mandateIndex}`);
+            const inputValue = inputField.value.toLowerCase();
+
+            dataList.innerHTML = '';
+
+            const filteredRAs = RAList.filter(ra => ra.toLowerCase().includes(inputValue));
+
+            filteredRAs.forEach(ra => {
+                const option = document.createElement('option');
+                option.value = ra;
+                dataList.appendChild(option);
+            });
+        }
+
+        function attachRepublicActSuggestions(activityIndex, mandateIndex) {
+            const raInput = document.querySelector(`#ra-input-${activityIndex}-${mandateIndex}`);
+            if (raInput) {
+                raInput.addEventListener('input', function () {
+                    filterRASuggestions(activityIndex, mandateIndex);
+                });
+            }
+        }
+
+        // Function to dynamically add an Activity and its fields
+        function addActivity() {
+            var activityCount = document.querySelectorAll('.activity-card').length;
+            var activitiesContainer = document.getElementById('activities-container');
+
+            // Create the new activity card
+            var newActivity = `
+                                        <div class="card mt-3 activity-card" data-index="${activityCount}">
+                                            <div class="card-header">
+                                                <h5>Activity ${activityCount + 1}</h5>
+                                                <button type="button" class="btn btn-danger float-right delete-activity" onclick="deleteActivity(${activityCount})">Delete</button>
+                                            </div>
+                                            <div class="card-body">
+                                                <!-- Activity fields -->
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="GPB_Activities_${activityCount}__ActivityType">Activity Type</label>
+                                                            <input class="form-control" id="GPB_Activities_${activityCount}__ActivityType" name="GPB.Activities[${activityCount}].ActivityType" required />
+                                                            <span class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="GPB_Activities_${activityCount}__Cause">Cause of Gender Issue</label>
+                                                            <input class="form-control" id="GPB_Activities_${activityCount}__Cause" name="GPB.Activities[${activityCount}].Cause" required />
+                                                            <span class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label for="GPB_Activities_${activityCount}__Name">Activity Name</label>
+                                                            <input class="form-control" id="GPB_Activities_${activityCount}__Name" name="GPB.Activities[${activityCount}].Name" required />
+                                                            <span class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="GPB_Activities_${activityCount}__Objective">Objective</label>
+                                                            <input class="form-control" id="GPB_Activities_${activityCount}__Objective" name="GPB.Activities[${activityCount}].Objective" required />
+                                                            <span class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="GPB_Activities_${activityCount}__PerformanceIndicators">Performance Indicators</label>
+                                                            <input class="form-control" id="GPB_Activities_${activityCount}__PerformanceIndicators" name="GPB.Activities[${activityCount}].PerformanceIndicators" required />
+                                                            <span class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="GPB_Activities_${activityCount}__Budget">Budget</label>
+                                                            <input class="form-control" id="GPB_Activities_${activityCount}__Budget" name="GPB.Activities[${activityCount}].Budget" required />
+                                                            <span class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="GPB_Activities_${activityCount}__SourceBudget">Source Budget</label>
+                                                            <input class="form-control" id="GPB_Activities_${activityCount}__SourceBudget" name="GPB.Activities[${activityCount}].SourceBudget" required />
+                                                            <span class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Mandates Section -->
+                                                <h6 class="mt-4">Mandates</h6>
+                                                <div id="mandates-container-${activityCount}">
+                                                    <div class="form-group mandate-group" data-mandate-index="0">
+                                                        <label for="GPB_Activities_${activityCount}__Mandates_0__RepublicAct">Republic Act</label>
+                                                        <input class="form-control" id="GPB_Activities_${activityCount}__Mandates_0__RepublicAct" name="GPB.Activities[${activityCount}].Mandates[0].RepublicAct" required list="ra-suggestions-${activityCount}-0" />
+                                                        <datalist id="ra-suggestions-${activityCount}-0">
+                                                            ${RAList.map(ra => `<option value="${ra}"></option>`).join('')}
+                                                        </datalist>
+                                                        <span class="text-danger"></span>
+
+                                                        <label for="GPB_Activities_${activityCount}__Mandates_0__Description">Mandate Description</label>
+                                                        <input class="form-control" id="GPB_Activities_${activityCount}__Mandates_0__Description" name="GPB.Activities[${activityCount}].Mandates[0].Description" required />
+                                                        <span class="text-danger"></span>
+
+                                                        <button type="button" class="btn btn-danger delete-mandate" onclick="deleteMandate(${activityCount}, 0)">Delete Mandate</button>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-secondary mt-2" onclick="addMandate(${activityCount})">Add Mandate</button>
+                                            </div>
+                                        </div>
+                                    `;
+
+            activitiesContainer.insertAdjacentHTML('beforeend', newActivity);
+        }
+
+        // Function to dynamically add a Mandate under an activity
+        function addMandate(activityIndex) {
+            var mandateCount = document.querySelectorAll(`#mandates-container-${activityIndex} .mandate-group`).length;
+            var mandatesContainer = document.getElementById(`mandates-container-${activityIndex}`);
+
+            // Create the new mandate fields
+            var newMandate = `
+                                        <div class="form-group mandate-group" data-mandate-index="${mandateCount}">
+                                                <hr class="my-3" /> <!-- Divider line -->
+                                            <label for="GPB_Activities_${activityIndex}__Mandates_${mandateCount}__RepublicAct">Republic Act</label>
+                                            <input class="form-control" id="GPB_Activities_${activityIndex}__Mandates_${mandateCount}__RepublicAct" name="GPB.Activities[${activityIndex}].Mandates[${mandateCount}].RepublicAct" required list="ra-suggestions-${activityIndex}-${mandateCount}" />
+                                            <datalist id="ra-suggestions-${activityIndex}-${mandateCount}">
+                                                ${RAList.map(ra => `<option value="${ra}"></option>`).join('')}
+                                            </datalist>
+                                            <span class="text-danger"></span>
+
+                                            <label for="GPB_Activities_${activityIndex}__Mandates_${mandateCount}__Description">Mandate Description</label>
+                                            <input class="form-control" id="GPB_Activities_${activityIndex}__Mandates_${mandateCount}__Description" name="GPB.Activities[${activityIndex}].Mandates[${mandateCount}].Description" required />
+                                            <span class="text-danger"></span>
+
+                                            <button type="button" class="btn btn-danger delete-mandate btn-sm mt-2" onclick="deleteMandate(${activityIndex}, ${mandateCount})">Delete Mandate</button>
+                                        </div>
+                                    `;
+
+            // Insert the new mandate into the mandate container for the current activity
+            mandatesContainer.insertAdjacentHTML('beforeend', newMandate);
+        }
+
+        // Function to delete an Activity
+        function deleteActivity(activityIndex) {
+            var activityCards = document.querySelectorAll('.activity-card');
+            if (activityCards.length > 1) { // Ensure at least one activity remains
+                document.querySelector(`[data-index="${activityIndex}"]`).remove();
+
+                // Update indexes of remaining activity cards
+                activityCards.forEach((card, index) => {
+                    card.setAttribute('data-index', index);
+                    card.querySelector('h5').textContent = `Activity ${index + 1}`;
+                    card.querySelector('.delete-activity').setAttribute('onclick', `deleteActivity(${index})`);
+                });
+            } else {
+                alert('At least one activity is required.');
+            }
+        }
+
+        // Function to delete a Mandate from an Activity
+        function deleteMandate(activityIndex, mandateIndex) {
+            var mandates = document.querySelectorAll(`#mandates-container-${activityIndex} .mandate-group`);
+            if (mandates.length > 1) { // Ensure at least one mandate remains
+                document.querySelector(`#mandates-container-${activityIndex} [data-mandate-index="${mandateIndex}"]`).remove();
+
+                // Update indexes of remaining mandates within this activity
+                mandates.forEach((mandate, index) => {
+                    mandate.setAttribute('data-mandate-index', index);
+                    mandate.querySelector('.delete-mandate').setAttribute('onclick', `deleteMandate(${activityIndex}, ${index})`);
+                });
+            } else {
+                alert('At least one mandate is required.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.mandate-group').forEach((group) => {
+                const activityIndex = group.closest('.activity-card').dataset.index;
+                const mandateIndex = group.dataset.mandateIndex;
+                attachRepublicActSuggestions(activityIndex, mandateIndex);
+            });
+        });
+    </script>
+}
+
+
+<style>
+
+    .btn-update {
+        background-color: #660000;
+        color: white;
+        transition: all 0.3s ease;
+    }
+        .btn-update:hover {
+            background-color: lightgray;
+            transform: translateY(-2px); /* Lift effect */
+        }
+    .info-card {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+    }
+
+</style>

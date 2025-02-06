@@ -1,0 +1,239 @@
+﻿@page
+@model GADApplication.Pages.GPBPage.FilterAndDownloadGPBModel
+@{
+    ViewData["Title"] = "Filter GPB by Year";
+    Layout = "_GADOLayout";
+
+}
+
+<!-- Header Section with Title -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+    <form method="get" class="position-relative d-flex align-items-center">
+        <div class="form-group mb-0 position-relative w-100 me-2">
+            <label for="year" class="form-label mb-0"> GPB Year:</label>
+            <div class="input-group">
+                <select name="year" id="year" class="form-select rounded-pill border-secondary shadow-sm pe-5">
+                    <option value="">All Years</option>
+                    @foreach (var submissionYear in Model.SubmissionYears)
+                    {
+                        if (Model.YearFilter == submissionYear.ToString())
+                        {
+                            <option value="@submissionYear" selected>@submissionYear</option>
+                        }
+                        else
+                        {
+                            <option value="@submissionYear">@submissionYear</option>
+                        }
+                    }
+                </select>
+
+                <!-- Filter Button for GPB Year -->
+                <button type="submit" 
+                    class="btn p-0 border-0 bg-transparent" 
+                    data-bs-toggle="tooltip" 
+                    title="Filter by year" 
+                    style="z-index: 10; ">
+                </button>
+            </div>
+        </div>
+
+        <!-- Responsible Unit Filter -->
+        <div class="form-group mb-0 position-relative w-100 me-2">
+            <label for="responsibleUnit" class="form-label mb-0">Responsible Unit:</label>
+            <div class="input-group">
+                <select name="responsibleUnit" id="responsibleUnit" class="form-select rounded-pill border-secondary shadow-sm pe-5">
+                    <option value="">All Units</option>
+                    @foreach (var unit in Model.ResponsibleUnits)
+                    {
+                        if (Model.UnitFilter == unit)
+                        {
+                            <option value="@unit" selected>@unit</option>
+                        }
+                        else
+                        {
+                            <option value="@unit">@unit</option>
+                        }
+                    }
+                </select>
+
+
+                <!-- Filter Button for Responsible Unit -->
+                <button type="submit" 
+                    class="btn p-0 border-0 bg-transparent" 
+                    data-bs-toggle="tooltip" 
+                    title="Filter by Responsible Unit"
+                    style="z-index: 10;">
+                </button>
+   
+            </div>
+        </div>
+
+        <!-- Activity Name Search -->
+        <div class="form-group mb-0 position-relative w-100 me-2">
+            <label for="activityName" class="form-label mb-0">Activity Name:</label>
+            <input type="text" name="activityName" id="activityName" class="form-control rounded-pill border-secondary shadow-sm pe-5" placeholder="Enter activity name" value="@Model.ActivityNameFilter">
+        </div>
+
+        <!-- Search Button -->
+        <button type="submit" class="btn btn-search justify-content-between align-items-center ms-2">
+            <i class="bi bi-search"></i>
+        </button>
+    </form>
+</div>
+<hr />
+
+@if (Model.GPBs != null && Model.GPBs.Count > 0)
+{
+    <div class="gpbList-card card mx-auto mb-4">
+        <div class="gpbList-header text-white">
+            <h5 class="mb-0 ms-1 p-2">GPB Submissions for Year @Model.YearFilter</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th>Year</th>
+                            <th>Total Budget</th>
+                            <th>Responsible Unit</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var gpb in Model.GPBs)
+                        {
+                            <tr class="text-center">
+                                <td class="fw-bold">@gpb.Year</td>
+                                <td>₱@String.Format("{0:N0}", gpb.TotalGAAOrBudget)</td>
+                                <td>@gpb.ResponsibleUnit</td>
+                                <td>
+                                    @* <span class="badge rounded-pill text-bg-warning">@gpb.Status</span> *@
+
+
+                                    @if (gpb.Status == "Approved with Files")
+                                    {
+                                        <span class="badge rounded-pill bg-success">Approved with files</span>
+                                    }
+                                    else if (gpb.Status == "Rejected with Files")
+                                    {
+                                        <span class="badge rounded-pill bg-danger">Rejected</span>
+                                    }
+                                    else if (gpb.Status == "Pending with File Upload")
+                                    {
+                                        <span class="badge rounded-pill text-bg-warning">Pending w/ File Upload</span>
+                                    }
+                                    else if (gpb.Status == "Pending")
+                                    {
+                                        <span class="badge rounded-pill bg-warning text-dark">Pending</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-secondary">Under Review</span>
+                                    }
+                                </td>
+                            </tr>
+
+                            <!-- Activities Section -->
+                            <tr class="activity-section">
+                                <!-- Add mb-4 class for Bootstrap margin-bottom -->
+                                <td colspan="4" class="bg-light p-3">
+                                    <div class="activities-container">
+                                        <h5 class="fw-semibold">Activities:</h5>
+                                        <ul class="list-unstyled ms-3">
+                                            @foreach (var activity in gpb.Activities)
+                                            {
+                                                <li class="mb-3">
+                                                    <strong>@activity.Name</strong><br />
+                                                    <span class="text-muted">Objective:</span> @activity.Objective<br />
+                                                    <span class="text-muted">Budget:</span> @activity.Budget<br />
+                                                    <span class="text-muted">Performance Indicators:</span> @activity.PerformanceIndicators<br />
+                                                    <span class="text-muted">Mandates:</span>
+                                                    <ul class="list-unstyled ms-4">
+                                                        @foreach (var mandate in activity.Mandates)
+                                                        {
+                                                            <li><i class="bi bi-chevron-right"></i> <em>@mandate.RepublicAct</em> - @mandate.Description</li>
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <form method="post" asp-page-handler="DownloadPdf" class="d-inline">
+                <input type="hidden" name="year" value="@Model.YearFilter" />
+                <input type="hidden" name="responsibleUnit" value="@Model.UnitFilter" />
+                <input type="hidden" name="activityName" value="@Model.ActivityNameFilter" />
+                <button type="submit" class="btn btn-sm btn-pdf btn-sm">
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Download PDF
+                </button>
+            </form>
+
+        </div>
+    </div>
+}
+else if (Model.GPBs != null)
+{
+    <p class="text-muted">No GPB submissions found for year @Model.YearFilter.</p>
+}
+
+
+    <style>
+
+    .btn-pdf {
+        color: #660000;
+        border-color: #660000;
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transition: all 0.3s ease;
+    }
+
+        .btn-pdf:hover {
+            color: #660000;
+            border-color: #660000;
+            border-radius: 10px; /* Same rounded effect for consistency */
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        input::placeholder {
+            font-size: 12.5px; /* Adjust font size */
+            opacity: 1; /* Ensure full visibility */
+            color: black;
+        }
+
+        .btn-search {
+            border-radius: 10px; /* Same rounded effect for consistency */
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+            0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+        }
+
+            .btn-search:hover {
+                border-radius: 10px; /* Same rounded effect for consistency */
+                transform: translateY(-2px); /* Lift effect */
+                background-color: lightgray;
+            }
+
+        .gpbList-header {
+            background-color: #660000;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .gpbList-card {
+            border-radius: 10px; /* Keep the rounded corners */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+            0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+            width: 75rem;
+        }
+    </style>

@@ -1,0 +1,126 @@
+﻿@page "{id:int}"
+@model GADApplication.Pages.GPBPage.DetailsModel
+
+@{
+    ViewData["Title"] = "GPB Details";
+    Layout = RouteData.Values["layout"]?.ToString() == "GADO" ? "_GADOLayout" : "_FPSLayout";
+}
+
+<!-- Container for title and button on the same line -->
+<div class="d-flex justify-content-between align-items-center">
+    <!-- Page Title on the left -->
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+</div>
+
+<hr />
+
+@if (Model.GPB != null)
+{
+    <div class="gpbList-card card mx-auto mb-4">
+        <div class="gpbList-header text-white">
+            <h5 class="mb-0 ms-1 p-2">GPB Year: @Model.GPB.Year</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-0">
+                    <p><strong>Total GAA or Budget:</strong> @Model.GPB.TotalGAAOrBudget</p>
+                </div>
+                <div class="col-md-6 mb-0">
+                    <p><strong>MFOPAP or PPA:</strong> @Model.GPB.MFOPAPOrPPA</p>
+                </div>
+                <div class="col-md-6 mb-0">
+                    <p><strong>Responsible Unit:</strong> @Model.GPB.ResponsibleUnit</p>
+                </div>
+                <div class="col-md-6 mb-0">
+                    <p><strong>Status:</strong> <span class="badge bg-success text-light">@Model.GPB.Status</span></p>
+                </div>
+            </div>
+
+            <h4 class="mt-2">Activities</h4>
+            @if (Model.GPB.Activities != null && Model.GPB.Activities.Count > 0)
+            {
+                @foreach (var activity in Model.GPB.Activities)
+                {
+                    <div class="activity-card card mt-2 mb-2">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Activity: @activity.Name</h5>
+                        </div>
+                        <div class="card-body shadow-sm">
+                            <div class="row">
+                                <div class="col-md-6 mb-0">
+                                    <p><strong>Activity Type:</strong> @activity.ActivityType</p>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <p><strong>Cause:</strong> @activity.Cause</p>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <p><strong>Objective:</strong> @activity.Objective</p>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <p><strong>Performance Indicators:</strong> @activity.PerformanceIndicators</p>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <p><strong>Budget:</strong> @activity.Budget</p>
+                                </div>
+                                <div class="col-md-6 mb-0">
+                                    <p><strong>Source Budget:</strong> @activity.SourceBudget</p>
+                                </div>
+                            </div>
+
+                            <h6 class="mandate-section mt-4">Mandates</h6>
+                            <ul class="list-group">
+                                @if (activity.Mandates != null && activity.Mandates.Count > 0)
+                                {
+                                    @foreach (var mandate in activity.Mandates)
+                                    {
+                                        <li class="list-group-item">@mandate.RepublicAct - @mandate.Description</li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li class="list-group-item">No mandates available for this activity.</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">No activities available for this GPB.</p>
+
+            }
+
+            <div class="form-group d-flex justify-content-end">
+                <!-- Back to List Button -->
+                <a asp-page="/GPBPage/Index" class="btn btn-back bg-white me-1 ">
+                    <i class="bi bi-arrow-left me-1"></i> Back to List
+                </a>
+            </div>
+
+
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-muted">No details available for this GPB.</p>
+}
+
+
+    <style>
+        .gpbList-header{
+            background-color: #660000;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .gpbList-card{
+            border-radius: 10px; /* Keep the rounded corners */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+                        0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+            inset 1px 1px 6px rgba(0, 0, 0, 0.1), /* Slight dark inner shadow */
+            4px 4px 12px rgba(0, 0, 0, 0.1); /* Outer shadow to lift the card */
+            width: 75rem;  
+        }
+    </style>

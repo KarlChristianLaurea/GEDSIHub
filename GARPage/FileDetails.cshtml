@@ -1,0 +1,202 @@
+﻿@page "{id:int}"
+@model GADApplication.Pages.GARPage.DetailsModel
+
+@{
+    ViewData["Title"] = "GAR Details";
+    Layout = RouteData.Values["layout"]?.ToString() == "GADO" ? "_GADOLayout" : "_FPSLayout";
+
+
+}
+
+<h3>@ViewData["Title"]</h3>
+<hr />
+
+@if (Model.GPB != null)
+{
+    <div class="gar-details-card card mx-auto mb-4">
+        <div class="gardetails-header p-2 text-light fs-5">GPB Year: @Model.GPB.Year</div>
+            <div class="table-responsive table-wrapper">
+        <!-- Table Structure -->
+                <table class="table table-hover align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>Gender Issue / GAD Mandate</th>
+                    <th>Cause of Gender Issue</th>
+                    <th>GAD Result Statement / GAD Objective</th>
+                    <th>Relevant Organization MFOPAP or PPA</th>
+                    <th>GAD Activity</th>
+                    <th>Performance Indicators / Targets</th>
+                    <th>Actual Result (Outputs/Outcomes)</th>
+                    <th>Total Agency Approved Budget</th>
+                    <th>Actual Cost / Expenditure</th>
+                    <th>Nature of Event</th>
+                    <th>Number of Participants</th>
+                    <th>Organizing Team Members</th>
+                    <th>Responsible Unit / Office</th>
+                    <th>Variance / Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.GPB.Activities != null && Model.GPB.Activities.Count > 0)
+                {
+                    @foreach (var activity in Model.GPB.Activities)
+                    {
+                        <!-- Display activity details in a single row -->
+                        <tr>
+                            <!-- Gender Issue / GAD Mandate -->
+                            <td>
+                                @if (activity.Mandates != null && activity.Mandates.Count > 0)
+                                {
+                                    <ul>
+                                        @foreach (var mandate in activity.Mandates)
+                                        {
+                                            <li><strong>@mandate.RepublicAct</strong>: @mandate.Description</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <span>No mandates available.</span>
+                                }
+                            </td>
+                            <td>@activity.Cause</td>
+                            <td>@activity.Objective</td>
+                            <td>@Model.GPB.MFOPAPOrPPA</td>
+                            <td>@activity.Name</td>
+                            <td>@activity.PerformanceIndicators</td>
+
+                            <!-- Display all file details (text fields) in the activity row -->
+                            @if (Model.ActivityFiles.ContainsKey(activity.Id) && Model.ActivityFiles[activity.Id].Any())
+                            {
+                                var latestFile = Model.ActivityFiles[activity.Id].FirstOrDefault();
+                                <td>@latestFile?.ActualResult</td>
+                                <td>@activity.Budget</td>
+                                <td>@latestFile?.ActualCost?.ToString("F2")</td>
+                                <td>@latestFile?.NatureOfEvent</td>
+                                <td>@latestFile?.NumberOfParticipants</td>
+                                <td>@latestFile?.OrganizingTeamMembers</td>
+                                <td>@Model.GPB.ResponsibleUnit</td>
+                                <td>@latestFile?.Remarks</td> <!-- Assuming Remarks is stored in FileEntity -->
+                            }
+                            else
+                            {
+                                <td colspan="8" class="text-muted text-center">No file details available</td>
+                            }
+                        </tr>
+
+                        <!-- Display Uploaded Files in a Simplified Format Below -->
+                        @if (Model.ActivityFiles.ContainsKey(activity.Id) && Model.ActivityFiles[activity.Id].Any())
+                        {
+                            <tr>
+                                <td colspan="14">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>File Name</th>
+                                                <th>Upload Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var file in Model.ActivityFiles[activity.Id])
+                                            {
+                                                <tr>
+                                                    <td>@file.FileName</td>
+                                                    <td>@file.UploadDate.ToString("g")</td>
+                                                    <td>
+                                                        <a asp-page-handler="PreviewFile" asp-route-fileId="@file.Id" class="btn btn-action btn-sm btn-outline-info btn-preview">
+                                                            Preview
+                                                        </a>
+                                                        <a asp-page-handler="DownloadFile" asp-route-fileId="@file.Id" class="btn btn-action btn-sm btn-download">
+                                                            Download
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="14" class="text-muted text-center">No files uploaded for this activity.</td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="14" class="text-muted text-center">No activities available for this GPB.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+}
+else
+{
+    <p class="text-muted">No details available for this GPB.</p>
+}
+
+<!-- footer Section with buttons -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <div></div>
+    <div class="d-flex ms-auto">
+        <!-- Added d-flex class for horizontal alignment -->
+        <a asp-page="/GPBPage/SubmittedGPB" class="btn btn-back align-items-center bg-white me-3 mt-1" data-bs-toggle="tooltip" title="View Submissions Settings">
+            <i class="bi bi-arrow-left me-1"></i> Back to list
+        </a>
+    </div>
+</div>
+
+
+<!-- Custom Styles -->
+<style>
+    .gardetails-header {
+        background-color: #660000;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .gar-details-card {
+        border-radius: 10px;
+        width: 100%;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+    }
+
+    /* Button Styling for File Actions */
+    .btn-action {
+        transition: all 0.3s ease;
+    }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+        }
+
+    .btn-download {
+        background-color: #660000; /* Set the background color */
+        color: white; /* Ensure the text color is white for contrast */
+        transition: all 0.3s ease; /* Smooth transition for hover effects */
+    }
+
+        .btn-download:hover {
+            background-color: lightgray; /* Change color on hover */
+            transform: translateY(-2px); /* Lift effect on hover */
+        }
+
+    /* Scrollable table body */
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .btn-back{
+        border: 1px solid #660000;
+        color: #660000;
+    }
+</style>

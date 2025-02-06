@@ -1,0 +1,193 @@
+﻿@page "{gpbId}"
+@model GADApplication.Pages.GARPage.FileUploadModel
+@{
+    ViewData["Title"] = "Upload Files for GPB Activities";
+    Layout = "_FPSLayout";
+    var currentYear = DateTime.Now.Year; // Get the current year
+}
+
+<!-- Title and Create Button -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h4 class="mb-0">@ViewData["Title"]</h4>
+</div>
+<hr />
+
+
+<form method="post" enctype="multipart/form-data" asp-route-gpbId="@Model.GPBId">
+    <input type="hidden" asp-for="GPBId" /> <!-- Hidden field to pass GPB ID -->
+    @foreach (var activity in Model.GPBActivities)
+    {
+        <div class="card mt-4">
+            <div class="card-header main-header p-2"></div>
+            <div class="card-header">
+                <h5>
+                    @activity.Name
+                </h5>
+
+                <p><strong>Type:</strong> @activity.ActivityType</p>
+            </div>
+
+            <div class="card-body">
+                <input type="hidden" name="ActivityIds" value="@activity.Id" /> <!-- Hidden field for Activity ID -->
+
+                <div class="form-group">
+                    <label for="UploadedFiles_@activity.Id">Choose files to upload for this activity:</label>
+                    <input type="file" name="UploadedFiles_@activity.Id" class="form-control" multiple accept=".pdf" />
+                </div>
+
+
+
+                <!-- Additional fields related to the file for this activity -->
+                <div class="form-group">
+                    <label for="ActualCost_@activity.Id">Actual Cost:</label>
+                    <input type="text" name="FileEntityActualCost_@activity.Id" class="form-control"
+                           pattern="^\d+(\.\d{0,1})?$" title="Please enter a valid number with up to 1 decimal place."
+                           oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="ActualResult_@activity.Id">Actual Result:</label>
+                    <select name="FileEntityActualResult_@activity.Id" class="form-control">
+                        <option value="Done">Done</option>
+                        <option value="Not Done">Not Done</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="NatureOfEvent_@activity.Id">Nature of Event:</label>
+                    <input type="text" name="FileEntityNatureOfEvent_@activity.Id" class="form-control"
+                           pattern="^[A-Za-z., ]*$" title="Please enter only letters, spaces, periods (.), and commas (,)."
+                           oninput="this.value = this.value.replace(/[^A-Za-z., ]/g, '');" />
+                </div>
+
+                <div class="form-group">
+                    <label for="NumberOfParticipants_@activity.Id">Number of Participants:</label>
+                    <input type="text" name="FileEntityNumberOfParticipants_@activity.Id" class="form-control"
+                           pattern="^\d+$" title="Please enter a valid positive number."
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+                </div>
+
+
+                <div class="form-group">
+                    <label for="OrganizingTeamMembers_@activity.Id">Organizing Team Members:</label>
+                    <input type="text" name="FileEntityOrganizingTeamMembers_@activity.Id" class="form-control"
+                           pattern="^[A-Za-z., ]*$" title="Please enter only letters, spaces, periods (.), and commas (,)."
+                           oninput="this.value = this.value.replace(/[^A-Za-z., ]/g, '');" />
+                </div>
+                <div class="form-group">
+                    <label for="Remarks_@activity.Id">Remarks:</label>
+                    <input type="text" name="FileEntityRemarks_@activity.Id" class="form-control"
+                           pattern="^[A-Za-z., ]*$" title="Please enter only letters, spaces, periods (.), and commas (,)."
+                           oninput="this.value = this.value.replace(/[^A-Za-z., ]/g, '');" />
+                </div>
+
+            </div>
+        </div>
+    }
+    
+    <!-- Upload Button -->
+@*      <div class="text-end mt-2">
+        <button type="submit" class="btn btn-upload bg-white d-flex align-items-center mt-4">
+            Upload Files for All Activities
+        </button>
+        <a asp-page="/GPBPage/SubmittedGPB" class="align-items-center bg-white">
+            Mandates
+        </a>
+    </div>  *@
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <button type="submit" class="btn btn-upload d-flex align-items-center">
+            Upload Files for All Activities
+        </button>
+        <div class="d-flex ms-auto">
+            <!-- Added d-flex class for horizontal alignment -->
+            <a asp-page="/GPBPage/SubmittedGPB" class="btn btn-back align-items-center bg-white d-flex me-3 mt-1">
+                <i class="bi bi-arrow-left me-1"></i> Back to list
+            </a>
+        </div>
+    </div>
+
+
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Restrict input for Actual Cost to numbers with a single optional decimal
+            document.querySelectorAll('input[name^="FileEntityActualCost_"]').forEach(input => {
+                input.addEventListener('input', function () {
+                    this.value = this.value.match(/^\d*(\.\d{0,1})?$/) ? this.value : this.value.slice(0, -1);
+                });
+            });
+
+            // Restrict input for Nature of Event and Organizing Team Members to letters, spaces, periods, and commas
+            const textInputs = document.querySelectorAll('input[name^="FileEntityNatureOfEvent_"], input[name^="FileEntityOrganizingTeamMembers_"]');
+            textInputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    // Replace any characters that are not letters, spaces, periods, or commas
+                    this.value = this.value.replace(/[^A-Za-z., ]/g, '');
+                });
+            });
+
+            // Restrict input for Number of Participants to only positive integers
+            document.querySelectorAll('input[name^="FileEntityNumberOfParticipants_"]').forEach(input => {
+                input.addEventListener('input', function () {
+                    // Replace anything that is not a digit
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            });
+        document.addEventListener('DOMContentLoaded', function () {
+            // PDF preview setup for uploaded PDFs
+            var pdfjsLib = window['pdfjs-dist/build/pdf'];
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+            document.querySelectorAll('.preview-pdf').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    var pdfUrl = this.getAttribute('href');
+                    var canvasId = this.getAttribute('data-canvas');
+                    var canvas = document.getElementById(canvasId);
+
+                    pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
+                        pdf.getPage(1).then(function (page) {
+                            var viewport = page.getViewport({ scale: 1.5 });
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            var renderContext = {
+                                canvasContext: canvas.getContext('2d'),
+                                viewport: viewport
+                            };
+                            page.render(renderContext);
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+}
+
+<style>
+
+    .main-header{
+        background-color: #660000;
+    }
+    .btn-upload {
+        background-color: #660000;
+        transition: all 0.3s ease;
+        color: white;
+    }
+        .btn-upload:hover {
+            background-color: #990000;
+            color: white;
+            transform: translateY(-2px); /* Lift effect */
+        }
+
+    .btn-back{
+        border: 1px solid #660000;
+        color: #660000;
+    }
+</style>

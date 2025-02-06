@@ -1,0 +1,184 @@
+﻿@page
+@model GADApplication.Pages.GPBPage.GPBProgressModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_GADOLayout"; // Assuming your layout includes the sidebar
+}
+<head>
+    <!-- Bootstrap and jQuery already included here -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js for graphs -->
+</head>
+
+<!-- Header Section with Title -->
+<div class="d-flex justify-content-between align-items-center mt-2">
+    <h3 class="mb-0">@ViewData["Title"]</h3>
+    <div class="d-flex ms-auto">
+        <!-- Added d-flex class for horizontal alignment -->
+        <a asp-page="/GADO/SubmissionSettings/SetSubmissionDates" class="btn btn-sm btn-submissionSettings align-items-center bg-light fw-bold me-3 mt-1" data-bs-toggle="tooltip" title="View Submissions Settings">
+            GPB Submissions Settings
+        </a>
+        <a asp-page="/Calendar/Calendar" class="btn btn-sm btn-calendar d-flex align-items-center me-3 mt-1" data-bs-toggle="tooltip" title=" View Calendar">
+            <i class="bi bi-calendar-check me-2"></i> Calendar
+        </a>
+    </div>
+</div>
+
+<div class="container">
+
+
+    <!-- Overall Submission Progress Card -->
+    <div class="row mt-4">
+        <div class="col-md-6 mb-4">
+            <div class="progress-card card p-3 bg-light rounded">
+                <h3 class="text-center">Overall Submissions</h3>
+                <div id="progress-container" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+                <p class="text-center mt-3" id="progress-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submission Progress List -->
+    <div class="row">
+        @foreach (var gpb in Model.GPBList)
+        {
+            <div class="col-md-12 mb-4">
+                <div class="card submission-card p-3">
+                    <h5 class="card-title">GPB Year: @gpb.Year</h5>
+                    <p><strong>Total Budget:</strong> ₱@String.Format("{0:N0}", gpb.TotalGAAOrBudget)</p>
+                    <p><strong>Status:</strong> @gpb.ApprovalStatus</p>
+                    <div class="progress mb-3">
+                        <div class="progress-bar @Model.GetProgressBarColor(gpb.ApprovalStatus)" role="progressbar"
+                             style="width: @Model.GetProgressPercentage(gpb.ApprovalStatus)%;" aria-valuenow="@Model.GetProgressPercentage(gpb.ApprovalStatus)"
+                             aria-valuemin="0" aria-valuemax="100">
+                            @gpb.ApprovalStatus
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Scripts -->
+@section Scripts {
+    <script>
+        // Initialize ProgressBar.js circular progress bar
+        var bar = new ProgressBar.Circle('#progress-container', {
+            color: '#3498db',
+            strokeWidth: 8,
+            trailWidth: 2,
+            easing: 'easeInOut',
+            duration: 1400,
+            from: { color: '#FF8C00', width: 4 },
+            to: { color: '#3498db', width: 8 },
+            text: { value: '0%' },
+            step: function (state, circle) {
+                circle.path.setAttribute('stroke', state.color);
+                var value = Math.round(circle.value() * 100);
+                circle.setText(value + '%');
+            }
+        });
+        bar.animate(@Model.SubmissionProgress); // Set the progress from backend
+
+        document.getElementById('progress-text').innerText = `Submitted Reports: @Model.SubmittedReports / @Model.TotalUnits`;
+
+        // Initialize Chart.js for Performance by Age Group
+        var ctx = document.getElementById('ageGroupChart').getContext('2d');
+        var ageGroupChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['15-19', '21-30', '31-40', '41-50', '51-60', '61+'],
+                datasets: [{
+                    label: 'Performance',
+                    data: [55, 75, 60, 85, 78, 30], // Example data
+                    backgroundColor: '#8B0000',
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true },
+                }
+            }
+        });
+    </script>
+}
+
+<style>
+    /* Card styling */
+    .progress-card {
+        border: none;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+                    0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+        border-radius: 15px;
+        padding: 20px;
+        /* margin: 10px; */
+    }
+
+        .card h4 {
+            font-size: 1rem;
+            color: #888;
+        }
+
+        .card h2 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+
+    .submission-card {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    /* Progress bar and metrics styling */
+    #progress-container {
+        margin: 0 auto;
+        padding: 10px;
+        width: 150px;
+        height: 150px;
+    }
+
+    .progress {
+        height: 12px;
+        border-radius: 10px;
+    }
+
+    .progress-bar {
+        background-color: #3498db;
+        border-radius: 5px;
+    }
+
+
+    .btn-calendar {
+        background-color: #660000;
+        color: white;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Subtle secondary shadow */
+    }
+
+        .btn-calendar:hover {
+            background-color: lightgray;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 6px 6px rgba(0, 0, 0, 0.04);
+        }
+
+    /* Create Button Styling */
+    .btn-submissionSettings {
+        color: #660000;
+        border-color: #660000;
+        border-radius: 10px; /* Same rounded effect for consistency */
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+        0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+    }
+
+        .btn-submissionSettings:hover {
+            transform: translateY(-2px); /* Lift effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), /* Large, soft shadow */
+            0 6px 6px rgba(0, 0, 0, 0.04); /* Secondary very subtle shadow */
+        }
+</style>

@@ -1,0 +1,25 @@
+﻿@page
+@model GADApplication.Pages.GADO.MandatePage.AvailableMandatesModel
+@{
+    ViewData["Title"] = "Available Mandates";
+}
+
+<h1>Available Mandates</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Republic Act</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mandate in Model.Mandates)
+        {
+            <tr>
+                <td>@mandate.RepublicAct</td>
+                <td>@mandate.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>

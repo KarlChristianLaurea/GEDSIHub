@@ -1,0 +1,140 @@
+﻿@model List<GADApplication.Models.Notification>
+
+<div class="dropdown-menu dropdown-menu-end notification-panel" aria-labelledby="notificationDropdown">
+    <!-- Important Section -->
+    <p class="notification-section-title">Notifications</p>
+    <ul class="list-group notification-list">
+        @foreach (var notification in Model.Where(n => n.IsAdminNotification && !n.IsRead).Take(3))
+        {
+
+            <li class="notification-item">
+                <div class="notification-icon bg-icon">
+                    <i class="@(notification.IsAdminNotification ? "bi bi-star-fill text-warning" : "bi bi-chat-left-dots-fill text-secondary")"></i>
+                </div>
+
+                <!-- Notif Content -->
+                <div class="notification-content">
+                    <strong>@notification.Message</strong>
+                    <br>
+                    <span class="notification-timestamp">@notification.CreatedAt.ToString("g")</span>
+                </div>
+            </li>
+
+        }
+    </ul>
+
+    <!-- See All Button -->
+    <a href="@Url.Page("/Notifications")" class="btn btn-see-all">See All</a>
+</div>
+
+<script>
+    function markAsRead(notificationId) {
+        fetch(`/Notifications/MarkAsRead?id=${notificationId}`, {
+            method: 'POST'
+        }).then(() => location.reload());
+    }
+</script>
+
+
+
+
+
+<style>
+    .notification-panel {
+        width: 350px;
+        max-height: 450px;
+        overflow-y: auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        padding: 15px;
+
+    }
+
+    .btn-tab {
+        background-color: transparent;
+        color: #333;
+        font-weight: 600;
+        border: none;
+        padding: 5px 15px;
+        margin-right: 10px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .btn-tab.active {
+        color: #fff;
+        background-color: #8B0000; /* Dark red for active tab */
+        border-radius: 15px;
+    }
+
+    .notification-section-title {
+        font-weight: bold;
+        color: #555;
+        font-size: 0.9rem;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+
+    .notification-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .notification-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        border: 1px solid #eee;
+        font-size: 0.85rem;
+        color: #333;
+        background-color: #FAFAFA;
+    }
+
+    .notification-icon {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        margin-right: 10px;
+    }
+
+    .bg-icon-important {
+        background-color: #FFDD99; /* Light yellow background for important notifications */
+    }
+
+    .bg-icon-secondary {
+        background-color: #E0E0E0; /* Light gray background for less important notifications */
+    }
+
+    .notification-timestamp {
+        font-size: 0.75rem;
+        color: #888;
+        white-space: nowrap;
+    }
+
+    .btn-see-all {
+        border: 1px solid #333;
+        color: #333;
+        font-weight: 500;
+        border-radius: 20px;
+        width: 100%;
+        padding: 8px 0;
+        margin-top: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-see-all:hover {
+        background-color: #333;
+        color: #fff;
+    }
+
+
+
+</style>

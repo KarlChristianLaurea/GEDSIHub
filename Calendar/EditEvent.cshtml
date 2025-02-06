@@ -1,0 +1,40 @@
+﻿@page "{id:int}"
+@model EditEventModel
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<h2 class="text-primary">Edit Event</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="Name" class="form-label">Title</label>
+        <input type="text" id="Name" name="EventData.Name" class="form-control" value="@Model.EventData.Name" required />
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <input type="text" id="Description" name="EventData.Description" class="form-control" value="@Model.EventData.Description" />
+    </div>
+    <div class="mb-3">
+        <label for="Location" class="form-label">Location</label>
+        <input type="text" id="Location" name="EventData.Location" class="form-control" value="@Model.EventData.Location" required />
+    </div>
+    <div class="mb-3">
+        <label for="Attendees" class="form-label">Attendees</label>
+        <input type="number" id="Attendees" name="EventData.Attendees" class="form-control" value="@Model.EventData.Attendees" required />
+    </div>
+    <div class="mb-3">
+        <label for="IsConfirmed" class="form-label">Is Confirmed?</label>
+        <input type="checkbox" id="IsConfirmed" name="EventData.IsConfirmed" class="form-check-input" @(Model.EventData.IsConfirmed ? "checked" : "") />
+    </div>
+    <div class="mb-3">
+        <label for="Start" class="form-label">Start Date and Time</label>
+        <input type="datetime-local" id="Start" name="EventData.Start" class="form-control" value="@Model.EventData.Start.ToString("yyyy-MM-ddTHH:mm")" required />
+    </div>
+    <div class="mb-3">
+        <label for="End" class="form-label">End Date and Time</label>
+        <input type="datetime-local" id="End" name="EventData.End" class="form-control" value="@Model.EventData.End.ToString("yyyy-MM-ddTHH:mm")" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="/Calendar" class="btn btn-secondary">Cancel</a>
+</form>

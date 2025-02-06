@@ -1,0 +1,242 @@
+﻿@page "{conversationUser?}"
+@model GADApplication.Pages.MessagesModel
+@{
+    ViewData["Title"] = User.IsInRole("Admin") ? $"Chat with {Model.ConversationUser}" : "Chat with Admin";
+    Layout = "_FPSLayout";
+}
+
+<h2>@(User.IsInRole("Admin") ? $"Chat with {Model.ConversationUser}" : "Chat with Admin")</h2>
+
+<div class="chatWindow-card card mx-auto mt-2"> 
+    <div class="card-header p-2"></div>
+
+    <div id="chatWindow" style="border:1px solid #ccc; height: 400px; overflow-y: scroll; padding: 10px;">
+        <div id="messagesList">
+            @foreach (var message in Model.Messages)
+            {
+                <div class="message rounded-3 mb-1 text-white justify-content-end @((message.Sender == User.Identity.Name) ? "sent" : "received")">
+                    <strong>@message.Sender:</strong> <p class="text-white">@message.Content</p> <small class="text-light">@message.Timestamp.ToString("MM/dd/yyyy, hh:mm:ss tt")</small>
+                </div>
+            }
+
+@*             <div id="chatWindow" class="chat-window mb-3 flex-grow-1">
+                <div id="messagesList" class="messages-list">
+                    <!-- Messages will be dynamically loaded here -->
+                </div>
+            </div> *@
+        </div>
+    </div>
+
+    <div style="margin-top: 10px;">
+        @if (User.IsInRole("Admin"))
+        {
+            <label for="userSelect">Select User:</label>
+            <select id="userSelect" class="form-control" style="width: 80%; display: inline-block;">
+                <option value="">-- Select User --</option>
+                @foreach (var user in Model.Users)
+                {
+                    <option value="@user.UserName">@user.UserName</option>
+                }
+            </select>
+
+            <h4>Users Who Messaged</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Last Message</th>
+                    </tr>
+                </thead>
+                <tbody id="userList">
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr class="userRow" data-username="@user.UserName" style="cursor: pointer;">
+                            <td>@user.UserName</td>
+                            <td>@user.LastMessagePreview</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }  
+    </div>
+
+    <!--Compose Area -->
+    <div class="card-footer d-flex align-items-center ">
+        <input type="text" id="messageInput" placeholder="Enter your message" class="form-control rounded-pill border-secondary me-2 w-100" style="display: inline-block;" />
+        <button id="sendButton" class="btn btn-send rounded-circle" style="display: inline-block;">
+            <i class="bi bi-send-fill"></i>
+        </button>
+    </div>
+
+@*     <!-- Message Input -->
+    <div class="d-flex align-items-center">
+        <input type="text" id="messageInput" placeholder="Type a message..." class="form-control me-2" />
+        <button id="sendButton" class="btn btn-send">
+            <i class="bi bi-send-fill"></i>
+        </button>
+    </div> *@
+
+</div>
+
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder().withUrl("/messageHub").build();
+
+        function appendMessage(user, message, timestamp, isSent) {
+            const messageList = document.getElementById("messagesList");
+            const messageItem = document.createElement("div");
+            messageItem.className = isSent ? 'message sent' : 'message received';
+
+            // Attempt to parse the timestamp
+            let dateObj = new Date(timestamp);
+            let formattedTimestamp = 'Invalid Date';
+
+            // Check if timestamp is valid, otherwise use the current time
+            if (!isNaN(dateObj.getTime())) {
+                formattedTimestamp = dateObj.toLocaleString();
+            } else {
+                console.warn('Invalid timestamp, using current time.');
+                formattedTimestamp = new Date().toLocaleString();
+            }
+
+            // Append message to the chat window
+            messageItem.innerHTML = `<strong>${user}:</strong> ${message} <small class="text-muted">${formattedTimestamp}</small>`;
+            messageList.appendChild(messageItem);
+
+            // Scroll the chat window to the bottom
+            const chatWindow = document.getElementById("chatWindow");
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Load all messages for admin
+        function loadAllMessages() {
+            const url = '@Url.Page("Messages", "LoadAllMessages")';
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const messagesList = document.getElementById("messagesList");
+                    messagesList.innerHTML = ""; // Clear previous messages
+                    data.forEach(msg => {
+                        appendMessage(msg.sender, msg.content, msg.timestamp, msg.sender === '@User.Identity.Name');
+                    });
+                })
+                .catch(err => console.error(err));
+        }
+
+        // Load messages for the selected user
+        function loadMessages(user) {
+            const url = `@Url.Page("Messages", "LoadUserMessages")?conversationUser=${user}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const messagesList = document.getElementById("messagesList");
+                    messagesList.innerHTML = ""; // Clear previous messages
+                    data.forEach(msg => {
+                        appendMessage(msg.sender, msg.content, msg.timestamp, msg.sender === '@User.Identity.Name');
+                    });
+                })
+                .catch(err => console.error(err));
+        }
+
+        // Highlight the selected user in the table and load messages
+        document.querySelectorAll(".userRow").forEach(row => {
+            row.addEventListener("click", function () {
+                const selectedUser = this.getAttribute("data-username");
+                document.getElementById("userSelect").value = selectedUser; // Set the dropdown value
+                loadMessages(selectedUser); // Load messages for the selected user
+            });
+        });
+
+        // Listen for real-time messages
+        connection.on("ReceiveMessage", (user, message, timestamp) => {
+            const currentUser = '@User.Identity.Name';
+            appendMessage(user, message, timestamp, currentUser === user);
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+
+        document.getElementById("sendButton").addEventListener("click", function () {
+            const message = document.getElementById("messageInput").value;
+            const sender = '@User.Identity.Name'; // The current user sending the message
+            let receiver;
+
+            // Set the receiver based on whether the user is an admin or a regular user
+            if ('@User.IsInRole("Admin")' === 'True') {
+                receiver = document.getElementById("userSelect").value; // Admin sends to selected user
+            } else {
+                receiver = "admin@example.com"; // Regular user always sends to admin
+            }
+
+            if (receiver && message.trim()) {
+                connection.invoke("SendMessage", sender, receiver, message)
+                    .then(() => {
+                        // No need to append message here since it will be received and appended by the ReceiveMessage event
+                        document.getElementById("messageInput").value = ''; // Clear input after sending
+                    })
+                    .catch(err => console.error(err.toString()));
+            } else {
+                alert("Please select a user and enter a message.");
+            }
+        });
+
+        // Automatically load all messages for admin on page load
+        window.onload = function () {
+            const isAdmin = '@User.IsInRole("Admin")' === 'True';
+            if (isAdmin) {
+                loadAllMessages();
+            }
+
+            const chatWindow = document.getElementById("chatWindow");
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        };
+    </script>
+}
+
+<style>
+    .btn-send{
+        background-color: #660000;
+        color: white;
+    }
+
+    .btn-send:hover{
+        background-color: lightgray;
+    }
+
+
+    .card-header{
+        background-color: #660000;
+    }
+
+        /* Sent messages */
+        .message.sent {
+            align-self: flex-end; /* Align sent messages to the right */
+            background-color: #660000;  /* Example: Blue background */
+            color: white; /* White text */
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 70%;
+            text-align: left;
+        }
+
+        /* Received messages */
+        .message.received {
+            align-self: flex-start; /* Align received messages to the left */
+            background-color: lightgray; /* Example: Dark red background */
+            color: white; /* White text */
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 70%;
+            text-align: left;
+        }
+
+    /* Chat Window */
+    #messagesList {
+        display: flex;
+        flex-direction: column; /* Stack messages vertically */
+        gap: 10px; /* Add spacing between messages */
+    }
+
+</style>

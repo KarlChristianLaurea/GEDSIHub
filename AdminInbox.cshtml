@@ -1,0 +1,249 @@
+﻿@page
+@model GADApplication.Pages.AdminInboxModel
+@{
+    ViewData["Title"] = "Admin Inbox";
+    Layout = "_GADOLayout";
+}
+
+<div class="row">
+    <!-- User List Panel -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="chatCard-header p-2">
+                <h7 class="text-light">Chats</h7>
+            </div>
+            <div class="card-body p-0">
+                <ul class="list-group user-list">
+                    @foreach (var user in Model.Users)
+                    {
+                        <li class="list-group-item userRow d-flex align-items-center" data-email="@user.Email" style="cursor: pointer;">
+                            <div class="user-info flex-grow-1">
+                                <span class="user-name">@user.UserName</span><br>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Window Panel -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="chatCard-header p-2"></div>
+            <div class="card-body d-flex flex-column">
+                <!-- Chat Window -->
+                <div id="chatWindow" class="chat-window mb-3 flex-grow-1">
+                    <div id="messagesList" class="messages-list">
+                        <!-- Messages will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <!-- Message Input -->
+                <div class="d-flex align-items-center">
+                    <input type="text" id="messageInput" placeholder="Type a message..." class="form-control me-2" />
+                    <button id="sendButton" class="btn btn-send">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+    <script>
+        // SignalR connection setup
+        const connection = new signalR.HubConnectionBuilder().withUrl("/messageHub").build();
+        const currentUser = '@Html.Raw(User.Identity.Name)';
+
+        connection.start()
+            .then(() => {
+                console.log("SignalR Connected.");
+                connection.on("ReceiveMessage", (user, message, timestamp) => {
+                    appendMessage(user, message, timestamp, user === currentUser);
+                });
+            })
+            .catch(err => console.error("Error connecting to SignalR:", err));
+
+        function loadMessages(userEmail) {
+            fetch(`/AdminInbox?handler=LoadUserMessages&conversationUser=${encodeURIComponent(userEmail)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const messagesList = document.getElementById("messagesList");
+                    messagesList.innerHTML = "";
+                    data.forEach(msg => appendMessage(msg.sender, msg.content, msg.timestamp, msg.sender === currentUser));
+                })
+                .catch(err => console.error('Failed to load messages:', err));
+        }
+
+        function appendMessage(user, message, timestamp, isSent) {
+            const messageList = document.getElementById("messagesList");
+            const messageItem = document.createElement("div");
+            messageItem.className = `message ${isSent ? 'sent' : 'received'}`;
+            messageItem.innerHTML = `
+                                <div class="message-content">
+                                    <p class="mb-0">${message}</p>
+                                    <small>${new Date(timestamp).toLocaleString()}</small>
+                                </div>`;
+            messageList.appendChild(messageItem);
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+
+        document.querySelectorAll(".userRow").forEach(row => {
+            row.addEventListener("click", function () {
+                const selectedUserEmail = this.getAttribute("data-email");
+
+                // Remove "active" class from all rows
+                document.querySelectorAll(".userRow").forEach(r => r.classList.remove("active"));
+
+                // Add "active" class to the clicked row
+                this.classList.add("active");
+
+                // Load messages for the selected user
+                loadMessages(selectedUserEmail);
+            });
+        });
+
+        document.getElementById("sendButton").addEventListener("click", function () {
+            const message = document.getElementById("messageInput").value.trim();
+            const receiver = document.querySelector(".userRow.active")?.getAttribute("data-email");
+            if (receiver && message) {
+                connection.invoke("SendMessage", currentUser, receiver, message)
+                    .then(() => {
+                        document.getElementById("messageInput").value = '';
+                    })
+                    .catch(err => console.error('Error sending message:', err));
+            } else {
+                alert("Please select a user and enter a message.");
+            }
+        });
+
+        document.getElementById("messageInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("sendButton").click();
+            }
+        });
+    </script>
+}
+
+<style>
+
+    .chatCard-header{
+        background-color: #660000;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .user-list {
+        padding: 0;
+        margin: 0;
+    }
+
+    .userRow {
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .userRow:hover {
+            background-color: #f0f2f5;
+        }
+
+        .userRow.active {
+            background-color: #dceeff;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+    .user-info .user-name {
+        font-size: 1rem;
+        color: #000;
+    }
+
+    .user-info .last-message {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .message-time {
+        font-size: 0.8rem;
+        color: white;
+    }
+
+    .message-icon {
+        font-size: 1.25rem;
+        color: #007bff;
+    }
+
+    .card {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .chat-window {
+        height: 500px;
+        overflow-y: auto;
+        background-color: #f2f2f2;
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    .messages-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        display: flex;
+        align-items: flex-end;
+        padding: 8px 12px;
+        border-radius: 18px;
+        max-width: 75%;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+        .message.sent {
+            align-self: flex-end;
+            background-color: #802020;
+            color: white;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background-color: #e9ecef;
+            color: #333;
+        }
+
+    .message-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .message-content small {
+            font-size: 0.8rem;
+        }
+
+    .btn-send {
+        background-color: #660000;
+        color: white;
+        border-radius: 50%;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-send:hover {
+            background-color: #802020;
+            color: white;
+        }
+
+    #messageInput {
+        padding: 10px;
+        font-size: 1rem;
+    }
+</style>
+
